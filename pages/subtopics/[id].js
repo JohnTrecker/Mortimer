@@ -25,6 +25,7 @@ export default function ReferencesList({supabase}) {
         supabase
             .from('reference')
             .select(`
+                id,
                 pages,
                 work(
                     author,

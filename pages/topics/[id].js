@@ -9,8 +9,6 @@ export default function SubtopicList({supabase}) {
     const router = useRouter()
     const { id } = router.query
 
-    console.log(router)
-
     useEffect(fetchSubtopics, [id, supabase])
 
     if (error) router.push('/topics')
