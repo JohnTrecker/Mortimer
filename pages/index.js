@@ -1,8 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import styles from '../styles/Home.module.css'
-import Topics from '../components/Topics'
-import { useState } from 'react'
 
 export default function Home({ session, supabase: sb }) {
   return (

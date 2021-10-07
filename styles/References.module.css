@@ -8,10 +8,11 @@
 
 .citation {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
 }
 
 .reference {
+    margin-left: 5px;
     display: flex;
     flex-direction: row;
 }
@@ -19,4 +20,9 @@
 .link {
     color: blue;
     text-decoration: underline;
+    cursor: pointer;
+}
+
+.excerpt {
+    margin: 15px;
 }

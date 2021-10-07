@@ -1,49 +1,37 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import LinkedList from '../../components/LinkedList'
 
-const Topic = ({supabase}) => {
+export default function SubtopicList({supabase}) {
     const [subtopics, setSubtopics] = useState([])
-    const [error, setError] = useState(false)
+    const [error, setError] = useState(null)
     const router = useRouter()
     const { id } = router.query
 
-    useEffect(() => {
-        const fetchSubtopics = async () => {
-            const {data, error} = await supabase
-                .from('subtopic')
-                .select('id, alt_id, description')
-                .eq('topic_id', id);
-            
-            setSubtopics(data)
-            setError(error)
-        }
+    console.log(router)
 
-        fetchSubtopics()
-    }, [])
+    useEffect(fetchSubtopics, [id, supabase])
 
     if (error) router.push('/topics')
 
-    return (
-        <ul>
-            {subtopics && subtopics.map(sub => {
-                let indent = sub.alt_id.split('.').length
-                let style = {
-                    textIndent: `${indent * 20}px`,
-                }
-                return (
-                    <li key={sub.id} style={style}>
-                        <Link
-                            href={`/subtopics/${sub.id}`}
-                        >
-                            {sub.description}
-                        </Link>
-                    </li>
+    return <LinkedList
+                data={subtopics}
+                path='/subtopics/'
+                nameKey='description'
+                indent
+            />
 
-                )
-            })}
-        </ul>
-    )
+    function fetchSubtopics(){
+        if (!id) return
+        supabase
+            .from('subtopic')
+            .select('id, alt_id, description')
+            .eq('topic_id', id)
+            .then(({data, error}) => {
+                setSubtopics(data)
+                setError(error)
+            })
+            .catch(err => setError(err.message))
+    }
 }
-
-export default Topic

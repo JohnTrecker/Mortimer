@@ -1,36 +1,22 @@
-import { SupabaseClient } from '@supabase/supabase-js'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import LinkedList from '../../components/LinkedList'
 
-const Topics = ({supabase}) => {
+export default function TopicsList({supabase}) {
     const [topics, setTopics] = useState([])
+    const [error, setError] = useState(null)
 
-    useEffect(() => {
-        const fetchTopics = async () => {
-            const {data, error} = await supabase
-                .from('topic')
-                .select('*');
+    useEffect(fetchTopics, [supabase])
 
-            setTopics(data)
-        }
+    function fetchTopics(){
+        supabase
+            .from('topic')
+            .select('*')
+            .then(({data, error}) => {
+                setTopics(data)
+                setError(error)
+            })
+            .catch(err => setError(err.message))
+    }
 
-        fetchTopics()
-    }, [])
-
-    return (
-        <ul>
-            {topics.map(topic => (
-                <li key={topic.id}>
-                    <Link
-                        href={`topics/${topic.id}`}
-                    >
-                        {topic.name}
-                    </Link>
-                </li>
-            ))}
-        </ul>
-    )
+    return <LinkedList data={topics} path='topics/' nameKey='name' />
 }
-
-export default Topics
