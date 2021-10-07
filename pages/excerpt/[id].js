@@ -14,7 +14,7 @@ const Excerpt = ({supabase}) => {
     if (error) router.push(`/topics`)
 
     return (
-        <p style={styles.excerpt}>{excerpt}</p>
+        <p className={styles.excerpt}>{excerpt}</p>
     )
 
     function fetchExcerpt() {
