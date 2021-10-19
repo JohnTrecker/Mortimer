@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "json-server": "json-server --watch data/db.json --port 8000",
+    "dev data": "concurrently \"next dev\" \"npm run json-server\"",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -15,7 +17,9 @@
     "react-dom": "17.0.2"
   },
   "devDependencies": {
+    "concurrently": "^6.2.0",
     "eslint": "7.32.0",
-    "eslint-config-next": "11.1.2"
+    "eslint-config-next": "11.1.2",
+    "json-server": "^0.17.0"
   }
 }

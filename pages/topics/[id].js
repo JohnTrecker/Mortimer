@@ -1,7 +1,9 @@
 import Link from 'next/link'
+import LinkedList from '../../components/LinkedList'
+
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import LinkedList from '../../components/LinkedList'
+import { flattenSubtopics, mockResponse } from '../../utils'
 
 export default function SubtopicList({supabase}) {
     const [subtopics, setSubtopics] = useState([])
@@ -11,7 +13,7 @@ export default function SubtopicList({supabase}) {
 
     useEffect(fetchSubtopics, [id, supabase])
 
-    if (error) router.push('/topics')
+    if (error) return (<p>Error fetching subtopics</p>)
 
     return <LinkedList
                 data={subtopics}
@@ -27,9 +29,18 @@ export default function SubtopicList({supabase}) {
             .select('id, alt_id, description')
             .eq('topic_id', id)
             .then(({data, error}) => {
+                if (error?.message === 'FetchError: Network request failed') {
+                    throw new Error()
+                }
                 setSubtopics(data)
-                setError(error)
             })
-            .catch(err => setError(err.message))
+            .catch(_err => {
+                mockResponse(`/subtopics?id=${id}`)
+                    .then(data => data.json())
+                    .then(data => setSubtopics(data[0]?.subtopics))
+                    .catch(err => {
+                        setError(err)
+                    })
+            })
     }
 }

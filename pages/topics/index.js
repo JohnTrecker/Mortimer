@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import LinkedList from '../../components/LinkedList'
+import { mockResponse } from '../../utils'
 
 export default function TopicsList({supabase}) {
     const [topics, setTopics] = useState([])
@@ -12,11 +13,20 @@ export default function TopicsList({supabase}) {
             .from('topic')
             .select('*')
             .then(({data, error}) => {
+                if (error?.message === 'FetchError: Network request failed') {
+                    throw new Error()
+                }
                 setTopics(data)
-                setError(error)
             })
-            .catch(err => setError(err.message))
+            .catch(_err => {
+                mockResponse('/topics')
+                    .then(data => data.json())
+                    .then(data => setTopics(data))
+                    .catch(err => setError(err))
+            })
     }
+
+    if (error) return <p>Oops, something broke. Please try again later.</p>
 
     return <LinkedList data={topics} path='topics/' nameKey='name' />
 }
