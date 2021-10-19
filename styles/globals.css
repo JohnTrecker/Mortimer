@@ -19,3 +19,8 @@ li {
   list-style: none;
   margin-bottom: 20px;
 }
+
+ul {
+  margin: 1.5em;
+  padding-inline-start: 0;
+}

@@ -1,21 +1,18 @@
 import { cloneElement } from 'react'
-import Link from 'next/link'
+import LinkedListItem from './LinkedListItem'
+import styles from '../styles/LinkedList.module.css'
 
 export default function LinkedList({ data, path, nameKey, indent = false, children }) {
     return (
         <ul>
             {data && data.map(item => 
-                <li key={item.id}>
+                <li
+                    key={item.id}
+                    style={indent ? {marginLeft: getIndention(item.alt_id)} : null}
+                >
                     {children
                         ? cloneElement(children, {path, ...item})
-                        : (
-                            <Link
-                                href={`${path}${item.id}`}
-                                style={indent ? {textIndent: getIndention(item.alt_id)} : {}}
-                            >   
-                                {item[nameKey]}
-                            </Link>
-                        ) 
+                        : <LinkedListItem href={`${path}${item.id}`} value={getValue(item.alt_id ?? item.id, item[nameKey])}/> 
                     }
                 </li>
             )}
@@ -25,7 +22,16 @@ export default function LinkedList({ data, path, nameKey, indent = false, childr
     function getIndention(str){
         const level = str.split('.').length
         return level === 1
-            ? `20px`
-            : `${level * 20}px`
+            ? null
+            : `${level * 2}em`
+    }
+
+    function getValue(altId, description){
+        return (
+            <div className={styles.numbered}>
+                <sup className={styles.alt}>{altId}.</sup>
+                <p>{description}</p>
+            </div>
+        )
     }
 }

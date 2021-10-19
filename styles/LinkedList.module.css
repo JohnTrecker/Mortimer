@@ -1,0 +1,9 @@
+.numbered {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+
+.alt {
+    margin-right: 1em;
+}
