@@ -3,7 +3,7 @@ import LinkedList from '../../components/LinkedList'
 
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { flattenSubtopics, mockResponse } from '../../utils'
+import { mockResponse } from '../../utils'
 
 export default function SubtopicList({supabase}) {
     const [subtopics, setSubtopics] = useState([])
@@ -13,7 +13,7 @@ export default function SubtopicList({supabase}) {
 
     useEffect(fetchSubtopics, [id, supabase])
 
-    if (error) return (<p>Error fetching subtopics</p>)
+    if (error) return (<p>Error fetching subtopics. Try again in a minute.</p>)
 
     return <LinkedList
                 data={subtopics}
@@ -32,15 +32,47 @@ export default function SubtopicList({supabase}) {
                 if (error?.message === 'FetchError: Network request failed') {
                     throw new Error()
                 }
-                setSubtopics(data)
+                setSubtopics(nestSubtopics(data))
             })
             .catch(_err => {
                 mockResponse(`/subtopics?id=${id}`)
                     .then(data => data.json())
-                    .then(data => setSubtopics(data[0]?.subtopics))
+                    .then(data => { // TODO: format data in server
+                        const subs = data[0]?.subtopics
+                        const nestedSubs = nestSubtopics(subs)
+                        setSubtopics(nestedSubs)
+                    })
                     .catch(err => {
                         setError(err)
                     })
             })
+    }
+
+
+    function nestSubtopics(subs){ // TODO: format data in server
+        const memo = {}
+        const alpha = 'abcdefghijklmnopqrstuvwxyz'
+            .split('')
+            .reduce((memo, letter, number) => ({...memo, [letter]: number}), {})
+        
+        for (let sub of subs) {
+            const { id, alt_id, description } = sub
+            const [primary, secondary, tertiary] = alt_id.split('.')
+
+            if (tertiary) {
+                memo[primary].subtopics[alpha[secondary]].subtopics.push({...sub})
+                continue
+            }
+            if (secondary) {
+                memo[primary].subtopics.push({...sub, subtopics: []})
+                continue
+            }
+            if (primary) {
+                memo[primary] = {...sub, subtopics: []}
+                continue
+            }
+        }
+
+        return Object.values(memo)
     }
 }
