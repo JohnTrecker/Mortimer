@@ -15,5 +15,7 @@ export default function LinkedListItem({id, path, value, subItems}){
                     indent
                 />
             </Dropdown>
-        : <Link href={href}>{value}</Link>
+        : <div className='row'>
+            <Link href={href}>{value}</Link>
+          </div>
 }
