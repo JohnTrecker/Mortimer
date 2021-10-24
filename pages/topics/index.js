@@ -11,7 +11,7 @@ export default function TopicsList({supabase}) {
     function fetchTopics(){
         supabase
             .from('topic')
-            .select('*')
+            .select('id, name')
             .then(({data, error}) => {
                 if (error?.message === 'FetchError: Network request failed') {
                     throw new Error()
