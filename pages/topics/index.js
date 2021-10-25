@@ -8,6 +8,10 @@ export default function TopicsList({supabase}) {
 
     useEffect(fetchTopics, [supabase])
 
+    if (error) return <p>Oops, something broke. Please try again later.</p>
+
+    return <LinkedList data={topics} path='topics/' nameKey='name' />
+
     function fetchTopics(){
         supabase
             .from('topic')
@@ -25,8 +29,4 @@ export default function TopicsList({supabase}) {
                     .catch(err => setError(err))
             })
     }
-
-    if (error) return <p>Oops, something broke. Please try again later.</p>
-
-    return <LinkedList data={topics} path='topics/' nameKey='name' />
 }

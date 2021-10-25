@@ -56,7 +56,7 @@ export default function SubtopicList({supabase}) {
             .reduce((memo, letter, number) => ({...memo, [letter]: number}), {})
         
         for (let sub of subs) {
-            const { id, alt_id, description } = sub
+            const { alt_id } = sub
             const [primary, secondary, tertiary] = alt_id.split('.')
 
             if (tertiary) {
