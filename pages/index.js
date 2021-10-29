@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import styles from '../styles/Home.module.css'
+import CTA from '../components/CTA'
 
 export default function Home({ session, supabase: sb }) {
   return (
@@ -12,9 +13,7 @@ export default function Home({ session, supabase: sb }) {
       </Head>
 
       <main className={styles.main}>
-        <Link href='/topics'>
-          Go to Topics
-        </Link>
+        <CTA/>
       </main>
 
       <footer className={styles.footer}>
