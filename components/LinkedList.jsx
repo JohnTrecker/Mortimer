@@ -4,7 +4,7 @@ import styles from '../styles/LinkedList.module.css'
 
 export default function LinkedList({ data, path, nameKey, children, indent = false }) {
     return (
-        <ul>
+        <ol>
             {data && data.map((item, i) => 
                 <li
                     key={`${item.id}-${i}`}
@@ -22,7 +22,7 @@ export default function LinkedList({ data, path, nameKey, children, indent = fal
                     }
                 </li>
             )}
-        </ul>
+        </ol>
     )
 
     function indent(str){

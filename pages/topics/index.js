@@ -16,17 +16,13 @@ export default function TopicsList({supabase}) {
         supabase
             .from('topic')
             .select('id, name')
+            .order('id', {ascending: true})
             .then(({data, error}) => {
-                if (error?.message === 'FetchError: Network request failed') {
-                    throw new Error()
+                if (error?.message) {
+                    throw new Error(error)
                 }
                 setTopics(data)
             })
-            .catch(_err => {
-                mockResponse('/topics')
-                    .then(data => data.json())
-                    .then(data => setTopics(data))
-                    .catch(err => setError(err))
-            })
+            .catch(err => setError(err))
     }
 }

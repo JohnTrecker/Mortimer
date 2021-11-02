@@ -28,23 +28,15 @@ export default function SubtopicList({supabase}) {
             .from('subtopic')
             .select('id, alt_id, description, is_referenced')
             .eq('topic_id', id)
+            .order('id', {ascending: true})
             .then(({data, error}) => {
                 if (error?.message === 'FetchError: Network request failed') {
                     throw new Error()
                 }
                 setSubtopics(nestSubtopics(data))
             })
-            .catch(_err => {
-                mockResponse(`/subtopics?id=${id}`)
-                    .then(data => data.json())
-                    .then(data => { // TODO: format data in server
-                        const subs = data[0]?.subtopics
-                        const nestedSubs = nestSubtopics(subs)
-                        setSubtopics(nestedSubs)
-                    })
-                    .catch(err => {
-                        setError(err)
-                    })
+            .catch(err => {
+                setError(err)
             })
     }
 
