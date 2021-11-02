@@ -26,7 +26,6 @@ ul {
 }
 
 .row {
-  cursor: pointer;
   width: 100%;
   max-width: 75%;
   display: flex;
@@ -39,7 +38,14 @@ ul {
   align-items: baseline;
 }
 
+.link {
+  cursor: pointer;
+  text-decoration: underline;
+  color: blue;
+}
+
 .chevron {
+  cursor: pointer;
   display: inline-block;
   border-right: 4px solid black;
   border-bottom: 4px solid black;

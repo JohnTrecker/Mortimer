@@ -3,11 +3,12 @@ import Link from 'next/link'
 import LinkedList from './LinkedList'
 import Dropdown from './Dropdown'
 
-export default function LinkedListItem({id, path, value, subItems}){
-    const href = `${path}${id}`
-    
+export default function LinkedListItem({id, path, value, subItems, isReferenced}){
+    const href = isReferenced ? `${path}${id}` : null
+    const classes = 'row'.concat(isReferenced ? ' link' : '')
+
     return subItems?.length > 0
-        ? <Dropdown header={value} href={href}>
+        ? <Dropdown className={classes} header={value} href={href}>
                 <LinkedList
                     data={subItems}
                     path='/subtopics/'
@@ -15,7 +16,7 @@ export default function LinkedListItem({id, path, value, subItems}){
                     indent
                 />
             </Dropdown>
-        : <div className='row'>
+        : <div className={classes}>
             <Link href={href}>{value}</Link>
           </div>
 }

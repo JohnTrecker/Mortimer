@@ -26,7 +26,7 @@ export default function SubtopicList({supabase}) {
         if (!id) return
         supabase
             .from('subtopic')
-            .select('id, alt_id, description')
+            .select('id, alt_id, description, is_referenced')
             .eq('topic_id', id)
             .then(({data, error}) => {
                 if (error?.message === 'FetchError: Network request failed') {

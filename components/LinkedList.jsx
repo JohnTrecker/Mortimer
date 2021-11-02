@@ -17,6 +17,7 @@ export default function LinkedList({ data, path, nameKey, children, indent = fal
                             path={path}
                             value={getValue(item.alt_id ?? item.id, item[nameKey])}
                             subItems={item.subtopics}
+                            isReferenced={item.is_referenced ?? true}
                           /> 
                     }
                 </li>
