@@ -1,15 +1,15 @@
 import {useState} from 'react'
 import Link from 'next/link'
-import LinkedList from './LinkedList'
+import OrderedList from './OrderedList'
 import Dropdown from './Dropdown'
 
-export default function LinkedListItem({id, path, value, subItems, isReferenced}){
+export default function OrderedListItem({id, path, value, subItems, isReferenced}){
     const href = isReferenced ? `${path}${id}` : null
     const classes = 'row'.concat(isReferenced ? ' link' : '')
 
     return subItems?.length > 0
         ? <Dropdown className={classes} header={value} href={href}>
-                <LinkedList
+                <OrderedList
                     data={subItems}
                     path='/subtopics/'
                     nameKey='description'

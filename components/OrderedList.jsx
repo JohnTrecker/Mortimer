@@ -1,18 +1,15 @@
 import { cloneElement } from 'react'
-import LinkedListItem from './LinkedListItem'
-import styles from '../styles/LinkedList.module.css'
+import OrderedListItem from './OrderedListItem'
+import styles from '../styles/OrderedList.module.css'
 
-export default function LinkedList({ data, path, nameKey, children, indent = false }) {
+export default function OrderedList({ data, path, nameKey, children, indent = false }) {
     return (
         <ol>
             {data && data.map((item, i) => 
-                <li
-                    key={`${item.id}-${i}`}
-                    style={indent && item.alt_id ? {marginLeft: indent(item.alt_id)} : null}
-                >
+                <li key={`${item.id}-${i}`} style={indent && item.alt_id ? {marginLeft: indent(item.alt_id)} : null}>
                     {children
                         ? cloneElement(children, {path, ...item})
-                        : <LinkedListItem
+                        : <OrderedListItem
                             id={item.id}
                             path={path}
                             value={getValue(item.alt_id ?? item.id, item[nameKey])}

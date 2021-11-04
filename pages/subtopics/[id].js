@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import LinkedList from '../../components/LinkedList'
+import OrderedList from '../../components/OrderedList'
 import Citation from '../../components/Citation'
 
 export default function ReferencesList({supabase}) {
@@ -15,9 +15,9 @@ export default function ReferencesList({supabase}) {
     if (error) router.push('/topics')
 
     return (
-        <LinkedList data={references} path='/excerpt/'>
+        <OrderedList data={references} path='/excerpt/'>
             <Citation/>
-        </LinkedList>
+        </OrderedList>
     )
 
     function fetchReferences() {

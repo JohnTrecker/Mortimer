@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import LinkedList from '../../components/LinkedList'
+import OrderedList from '../../components/OrderedList'
 import { mockResponse } from '../../utils'
 
 export default function TopicsList({supabase}) {
@@ -10,7 +10,7 @@ export default function TopicsList({supabase}) {
 
     if (error) return <p>Oops, something broke. Please try again later.</p>
 
-    return <LinkedList data={topics} path='topics/' nameKey='name' />
+    return <OrderedList data={topics} path='topics/' nameKey='name' />
 
     function fetchTopics(){
         supabase

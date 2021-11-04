@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import LinkedList from '../../components/LinkedList'
+import OrderedList from '../../components/OrderedList'
 
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
@@ -15,7 +15,7 @@ export default function SubtopicList({supabase}) {
 
     if (error) return (<p>Error fetching subtopics. Try again in a minute.</p>)
 
-    return <LinkedList
+    return <OrderedList
                 data={subtopics}
                 path='/subtopics/'
                 nameKey='description'
