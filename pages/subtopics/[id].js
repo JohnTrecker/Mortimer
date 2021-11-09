@@ -2,6 +2,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import OrderedList from '../../components/OrderedList'
 import Citation from '../../components/Citation'
+import { mockResponse } from '../../utils'
 
 export default function ReferencesList({supabase}) {
     const [references, setReferences] = useState([])
@@ -12,7 +13,8 @@ export default function ReferencesList({supabase}) {
 
     useEffect(fetchReferences, [id, supabase])
     
-    if (error) router.push('/topics')
+    if (!references.length) return <p>Loading...</p>
+    if (error) return <p>Error fetching references. Try again in a minute.</p>
 
     return (
         <OrderedList data={references} path='/excerpt/'>
@@ -39,9 +41,15 @@ export default function ReferencesList({supabase}) {
             `)
             .eq('subtopic_id', id)
             .then(({data, error}) => {
+                if (error?.message === 'FetchError: Network request failed') {
+                    throw new Error(error)
+                }
                 setReferences(data)
-                setError(error)
             })
-            .catch(err => err.message)
+            .catch(err => {
+                mockResponse('/references')
+                    .then(mockData => setReferences(mockData))
+                    .catch(_ => setError(err))
+            })
         }
 }

@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { mockResponse } from '/utils'
 import styles from '../../styles/References.module.css'
 
 const Excerpt = ({supabase}) => {
@@ -11,7 +12,7 @@ const Excerpt = ({supabase}) => {
 
     useEffect(fetchExcerpt, [id, supabase])
 
-    if (error) router.push(`/topics`)
+    if (error) return <p>Error fetching excerpt. Try again in a minute.</p>
 
     return (
         <p className={styles.excerpt}>{excerpt}</p>
@@ -24,11 +25,25 @@ const Excerpt = ({supabase}) => {
             .select('text')
             .eq('id', id)
             .then(({data, error}) => {
-                if (Array.isArray(data) && data.length > 0) setExcerpt(data[0].text)
+                if (error?.message === 'FetchError: Network request failed') {
+                    throw new Error(error)
+                }
+                setExcerpt(getText(data))
                 setError(error)
             })
+            .catch(err => {
+                mockResponse('/excerpts')
+                    .then(mockData => setExcerpt(getText(mockData)))
+                    .catch(_ => setError(err))
+            })
+
     }
 
+    function getText(data){
+        let text = ''
+        if (Array.isArray(data) && data.length > 0) text = data[0]?.text
+        return text
+    }
 }
 
 export default Excerpt

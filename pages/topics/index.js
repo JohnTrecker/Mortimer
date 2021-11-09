@@ -23,6 +23,10 @@ export default function TopicsList({supabase}) {
                 }
                 setTopics(data)
             })
-            .catch(err => setError(err))
+            .catch(err => {
+                mockResponse('/topics')
+                    .then(mockData => setTopics(mockData))
+                    .catch(_ => setError(err))
+            })
     }
 }

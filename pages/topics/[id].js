@@ -13,7 +13,8 @@ export default function SubtopicList({supabase}) {
 
     useEffect(fetchSubtopics, [id, supabase])
 
-    if (error) return (<p>Error fetching subtopics. Try again in a minute.</p>)
+    if (!subtopics.length) return <p>Loading...</p>
+    if (error) return <p>Error fetching subtopics. Try again in a minute.</p>
 
     return <OrderedList
                 data={subtopics}
@@ -31,12 +32,14 @@ export default function SubtopicList({supabase}) {
             .order('id', {ascending: true})
             .then(({data, error}) => {
                 if (error?.message === 'FetchError: Network request failed') {
-                    throw new Error()
+                    throw new Error(error)
                 }
                 setSubtopics(nestSubtopics(data))
             })
             .catch(err => {
-                setError(err)
+                mockResponse('/subtopics')
+                    .then(mockData => setSubtopics(nestSubtopics(mockData)))
+                    .catch(_ => setError(err))
             })
     }
 
