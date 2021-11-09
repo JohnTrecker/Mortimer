@@ -7,3 +7,8 @@
 .alt {
     margin-right: 1em;
 }
+
+.indent-1 { margin-left: 1em; }
+.indent-2 { margin-left: 2em; }
+.indent-3 { margin-left: 3em; }
+.indent-3 { margin-left: 4em; }

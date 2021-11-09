@@ -3,10 +3,7 @@ import Link from 'next/link'
 import OrderedList from './OrderedList'
 import Dropdown from './Dropdown'
 
-export default function OrderedListItem({id, path, value, subItems, isReferenced}){
-    const href = isReferenced ? `${path}${id}` : null
-    const classes = 'row'.concat(isReferenced ? ' link' : '')
-
+export default function OrderedListItem({classes, href, value, subItems}){
     return subItems?.length > 0
         ? <Dropdown className={classes} header={value} href={href}>
                 <OrderedList

@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { mockResponse } from '/utils'
-import styles from '../../styles/References.module.css'
+import { extractExcerpt, mockResponse } from '/utils'
+import styles from '/styles/References.module.css'
 
 const Excerpt = ({supabase}) => {
     const [excerpt, setExcerpt] = useState('')
@@ -25,24 +25,15 @@ const Excerpt = ({supabase}) => {
             .select('text')
             .eq('id', id)
             .then(({data, error}) => {
-                if (error?.message === 'FetchError: Network request failed') {
-                    throw new Error(error)
-                }
-                setExcerpt(getText(data))
-                setError(error)
+                if (error?.message) throw new Error(error)
+                setExcerpt(extractExcerpt(data)) // TODO: extract in server
             })
             .catch(err => {
                 mockResponse('/excerpts')
-                    .then(mockData => setExcerpt(getText(mockData)))
+                    .then(mockData => setExcerpt(extractExcerpt(mockData)))
                     .catch(_ => setError(err))
             })
 
-    }
-
-    function getText(data){
-        let text = ''
-        if (Array.isArray(data) && data.length > 0) text = data[0]?.text
-        return text
     }
 }
 

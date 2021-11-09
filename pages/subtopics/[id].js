@@ -1,8 +1,9 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import OrderedList from '../../components/OrderedList'
-import Citation from '../../components/Citation'
-import { mockResponse } from '../../utils'
+import OrderedList from '/components/OrderedList'
+import Citation from '/components/Citation'
+import { mockResponse } from '/utils'
+import { REFS_QUERY } from '/constants'
 
 export default function ReferencesList({supabase}) {
     const [references, setReferences] = useState([])
@@ -26,24 +27,10 @@ export default function ReferencesList({supabase}) {
         if (!id) return
         supabase
             .from('reference')
-            .select(`
-                id,
-                pages,
-                work(
-                    author,
-                    title,
-                    translator
-                ),
-                summary(
-                    summary
-                ),
-                excerpt_id
-            `)
+            .select(REFS_QUERY)
             .eq('subtopic_id', id)
             .then(({data, error}) => {
-                if (error?.message === 'FetchError: Network request failed') {
-                    throw new Error(error)
-                }
+                if (error?.message) throw new Error(error)
                 setReferences(data)
             })
             .catch(err => {
