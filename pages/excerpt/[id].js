@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { extractExcerpt, mockResponse } from '/utils'
-import styles from '/styles/References.module.css'
 
 const Excerpt = ({supabase}) => {
     const [excerpt, setExcerpt] = useState('')
@@ -14,9 +13,7 @@ const Excerpt = ({supabase}) => {
 
     if (error) return <p>Error fetching excerpt. Try again in a minute.</p>
 
-    return (
-        <p className={styles.excerpt}>{excerpt}</p>
-    )
+    return <p>{excerpt}</p>
 
     function fetchExcerpt() {
         if (!id) return

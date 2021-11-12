@@ -1,19 +1,25 @@
 import {useState} from 'react'
 import Link from 'next/link'
 import OrderedList from './OrderedList'
-import Dropdown from './Dropdown'
 
 export default function OrderedListItem({classes, href, value, subItems}){
     return subItems?.length > 0
-        ? <Dropdown className={classes} header={value} href={href}>
-                <OrderedList
-                    data={subItems}
-                    path='/subtopics/'
-                    nameKey='description'
-                    indent
-                />
-            </Dropdown>
+        ? <details>
+            <summary>
+                <Link href={href} prefetch={false}>
+                    <a>{value}</a>
+                </Link>
+            </summary>
+            <OrderedList
+                data={subItems}
+                path='/subtopics/'
+                nameKey='description'
+                indent
+            />
+          </details>
         : <div className={classes}>
-            <Link href={href}>{value}</Link>
+            <Link href={href} prefetch={false}>
+                <a>{value}</a>
+            </Link>
           </div>
 }

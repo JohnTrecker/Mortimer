@@ -1,25 +1,18 @@
-import styles from '../styles/References.module.css'
 import Link from 'next/link'
 
 export default function Citation({work, summary, pages, path, excerpt_id}){
-    const citation = `${work.title}, ${work.author}`
+    const citation = `- ${work.author}`
+    const href = `${path}${excerpt_id}`
+    const link = `${work.title}, ${pages}`
+    const { summary: text } = summary
+    
     return (
-        <>
-            <p className={styles.summary}>{summary.summary}</p>
-            
-            <div className={styles.citation}>
-                <p>{citation}</p>
-                <div className={styles.reference}>
-                    <p>(</p>
-                    <Link
-                        href={`${path}${excerpt_id}`}
-                        passHref
-                    >
-                        <p className={styles.link}>{` ${pages} `}</p>
-                    </Link>
-                    <p>)</p>
-                </div>
-            </div>
-        </>
+        <blockquote>
+            <p>{text}</p>
+            <p><cite>{citation}</cite></p>
+            <Link href={href}>
+                <a><cite>{link}</cite></a>
+            </Link>
+        </blockquote>
     )
 }
