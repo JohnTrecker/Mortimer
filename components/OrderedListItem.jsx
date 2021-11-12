@@ -1,14 +1,12 @@
 import {useState} from 'react'
-import Link from 'next/link'
 import OrderedList from './OrderedList'
+import Text from './Text'
 
 export default function OrderedListItem({classes, href, value, subItems}){
     return subItems?.length > 0
         ? <details>
             <summary>
-                <Link href={href} prefetch={false}>
-                    <a>{value}</a>
-                </Link>
+                <Text href={href} value={value}/>
             </summary>
             <OrderedList
                 data={subItems}
@@ -18,8 +16,6 @@ export default function OrderedListItem({classes, href, value, subItems}){
             />
           </details>
         : <div className={classes}>
-            <Link href={href} prefetch={false}>
-                <a>{value}</a>
-            </Link>
+            <Text href={href} value={value}/>
           </div>
 }

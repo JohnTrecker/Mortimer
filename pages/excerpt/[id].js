@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { extractExcerpt, mockResponse } from '/utils'
+import Text from '/components/Text'
 
 const Excerpt = ({supabase}) => {
     const [excerpt, setExcerpt] = useState('')
@@ -13,7 +14,7 @@ const Excerpt = ({supabase}) => {
 
     if (error) return <p>Error fetching excerpt. Try again in a minute.</p>
 
-    return <p>{excerpt}</p>
+    return <Text value={excerpt} />
 
     function fetchExcerpt() {
         if (!id) return

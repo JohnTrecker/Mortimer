@@ -48,7 +48,7 @@ function trimExcerpt(str){ // TODO: deprecate once excerpt data is cleaned
 }
 
 export function getOrderedListItemDetails(id, path, isReferenced){
-    let href = '#'
+    let href = null
     let classes = 'row'
     if (isReferenced) {
         href = `${path}${id}`
