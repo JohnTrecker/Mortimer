@@ -10,7 +10,7 @@ export default function Citation({work, summary, pages, path, excerpt_id}){
         <blockquote>
             <p>{text}</p>
             <p><cite>{citation}</cite></p>
-            <Link href={href}>
+            <Link href={href} prefetch={false}>
                 <a><cite>{link}</cite></a>
             </Link>
         </blockquote>
