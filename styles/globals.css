@@ -1,5 +1,6 @@
 @import url('~simpledotcss/simple.min.css');
 
+ol,ul {padding-left: 0px !important}
 
 li {
   list-style: none;
@@ -13,7 +14,7 @@ sup {
 
 .row {
   width: 100%;
-  max-width: 75%;
+  max-width: 95%;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
