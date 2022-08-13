@@ -1,4 +1,3 @@
-import {useState} from 'react'
 import OrderedList from './OrderedList'
 import Text from './Text'
 

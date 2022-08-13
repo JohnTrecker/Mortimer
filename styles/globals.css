@@ -28,3 +28,13 @@ sup {
 summary {
   font-weight: normal;
 }
+
+details summary > * { 
+  display: inline-flex;
+}
+
+details summary a,
+  details summary p {
+  max-width: 85%;
+  margin-left: 5%;
+}
