@@ -1,17 +1,14 @@
-import { useEffect, useState } from 'react'
-import useSearch from '../../hooks/useSearch'
 import OrderedList from '../../components/OrderedList'
 import Search from '../../components/Search'
-import { mockResponse } from '../../utils'
+import useSearch from '../../hooks/useSearch'
+import { useFetch } from '../../hooks/useFetch'
 
-export default function TopicsList({supabase}) {
-    const [topics, setTopics] = useState([])
-    const [error, setError] = useState(null)
+const TopicsList = ({supabase}) => {
+    const {data: topics, loading, error} = useFetch('topics', supabase)
     const [data, input, search, clear] = useSearch(topics, 'name')
 
-    useEffect(fetchTopics, [supabase])
-
-    if (error) return <p>Oops, something broke. Please try again later.</p>
+    if (loading) return <p>loading...</p>
+    if (error) return <p>Oops, something broke. Please try again.</p>
 
     return (
         <>
@@ -19,22 +16,6 @@ export default function TopicsList({supabase}) {
             <OrderedList data={data} path='topics/' nameKey='name' />
         </>
     )
-
-    function fetchTopics(){
-        supabase
-            .from('topic')
-            .select('id, name')
-            .order('id', {ascending: true})
-            .then(({data, error}) => {
-                if (error?.message) {
-                    throw new Error(error)
-                }
-                setTopics(data)
-            })
-            .catch(err => {
-                mockResponse('/topics')
-                    .then(mockData => setTopics(mockData))
-                    .catch(_ => setError(err))
-            })
-    }[]
 }
+
+export default TopicsList;
