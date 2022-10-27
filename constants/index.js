@@ -1,1 +1,0 @@
-export const REFS_QUERY = 'id,pages,work(author,title,translator),summary(summary),excerpt_id'
