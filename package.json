@@ -18,9 +18,12 @@
     "simpledotcss": "^1.0.4"
   },
   "devDependencies": {
+    "autoprefixer": "^10.4.13",
     "concurrently": "^6.2.0",
     "eslint": "7.32.0",
     "eslint-config-next": "11.1.2",
-    "json-server": "^0.17.0"
+    "json-server": "^0.17.0",
+    "postcss": "^8.4.21",
+    "tailwindcss": "^3.2.4"
   }
 }

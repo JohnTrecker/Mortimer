@@ -1,3 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 @import url('~simpledotcss/simple.min.css');
 
 ol,ul {padding-left: 0px !important}
