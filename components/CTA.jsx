@@ -1,17 +1,12 @@
 import Link from 'next/link'
-import styles from '../styles/container.module.css'
 
 export default function CTA(){
     return (
-        <div className={styles.flexColumn}>
+        <div className="flex flex-col justify-center items-center">
             <blockquote>{"Read the best books first or you may not have a chance to read them at all."}</blockquote>
-            <br/>
-            <cite>{"Henry David Thoreau"}</cite>
-            <br/>
-            <br/>
-            <br/>
+            <cite className="mt-8">{"Henry David Thoreau"}</cite>
             <Link href="/topics" passHref={true}>
-                <button>Explore by Topic</button>
+                <button className="btn btn-orange mt-20">Explore by Topic</button>
             </Link>
         </div>
     )

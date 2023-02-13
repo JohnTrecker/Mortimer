@@ -1,12 +1,10 @@
-import styles from '/styles/Search.module.css'
-
-export default function Search({search, clear}){
+const Search = ({search, clear}) => {
     return (
-        <div className={styles.search}>
+        <div className="flex flex-row justify-center">
             <input
                 type="search"
                 onChange={search}
-                className={styles.input}
+                className="w-7/12 h-12 p-1 m-2"
                 onAbort={clear}
                 placeholder="Search topics"
                 autoFocus
@@ -14,3 +12,5 @@ export default function Search({search, clear}){
         </div>
     )
 }
+
+export default Search;

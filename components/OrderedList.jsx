@@ -1,7 +1,7 @@
 import { cloneElement } from 'react'
 import OrderedListItem from './OrderedListItem'
 import { getOrderedListItemDetails } from '../utils'
-import styles from '/styles/OrderedList.module.css'
+import styles from '../styles/OrderedList.module.css'
 
 export default function OrderedList({ data, path, nameKey, children, indent: shouldIndent = false }) {
     return (
@@ -41,8 +41,8 @@ export default function OrderedList({ data, path, nameKey, children, indent: sho
 
     function getValue(id, description){
         return (
-            <div className={styles.numbered}>
-                <sup className={styles.alt}>{id}.</sup>
+            <div className="flex flex-row items-baseline">
+                <p className="mr-2 text-sm">{id}.</p>
                 <p>{description}</p>
             </div>
         )
