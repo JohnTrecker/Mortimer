@@ -3,10 +3,18 @@ import {useState, useEffect} from 'react';
 import { extractExcerpt, mockResponse, nestSubtopics } from '../utils'
 
 const URI = {
+    CATEGORIES: 'categories',
     TOPICS: 'topics',
     SUBTOPICS: 'subtopics',
     REFERENCES: 'references',
     EXCERPT: 'excerpt',
+}
+
+const fetchCategories = (supabase) => {
+    return supabase
+        .from('category')
+        .select('id, category, topic(id, name)')
+        .order('id', {ascending: true})
 }
 
 const fetchTopics = (supabase) => {
@@ -15,7 +23,6 @@ const fetchTopics = (supabase) => {
         .select('id, name')
         .order('id', {ascending: true})
 }
-
 
 const fetchSubtopics = (supabase, id) => {
     return supabase
@@ -41,6 +48,8 @@ const fetchReferences = (supabase, id) => {
 
 const _fetch = ({uri, id, supabase}) => {
     switch (uri) {
+        case URI.CATEGORIES:
+            return fetchCategories(supabase)
         case URI.TOPICS:
             return fetchTopics(supabase)
         case URI.SUBTOPICS:
