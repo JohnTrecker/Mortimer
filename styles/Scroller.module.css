@@ -1,0 +1,167 @@
+
+.content {
+  --space: 1rem;
+  --space-md: calc(var(--space) * 2);
+  --content-max-width: 0;
+  display: grid;
+  grid-template-columns:
+    [full-start] 1fr
+    [content-start]
+    min(var(--content-max-width), 100% - var(--space-md) * 2)
+    [content-end]
+    1fr [full-end];
+}
+
+.content > * {
+  grid-column: content;
+}
+
+.content > * + * {
+  margin-block-start: var(--space);
+}
+
+.gallery[data-direction="left"] {
+  direction: rtl;
+}
+
+/* ========================== */
+/* ===== Gallery styles ===== */
+/* ========================== */
+
+.gallery {
+  /* margin-block: 5vh; */
+  grid-column: full;
+  display: grid;
+  grid-template-columns: inherit;
+  padding-block: var(--space-md);
+  overflow-x: scroll;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  scroll-snap-align: start;
+}
+
+.gallery::-webkit-scrollbar {
+  inline-size: 0 !important;
+  display: none;
+}
+
+.gallery .floating_content {
+  grid-column: content;
+  display: flex;
+  align-items: center;
+  gap: var(--space);
+}
+
+.gallery .floating_content > * {
+  flex-shrink: 0;
+  /* display: flex; */
+  /* align-items: center; */
+  /* justify-content: center; */
+  scroll-snap-align: center;
+  inline-size: 100%;
+  max-inline-size: 25rem;
+  /* font-size: 2rem; */
+  /* background: none;  Change this color  */
+  /* border-radius: 4px; */
+  object-fit: cover;
+}
+
+.gallery .floating_content[data-images="video"] > * {
+  aspect-ratio: 16 / 9;
+}
+
+.gallery .floating_content[data-images="square"] > * {
+  aspect-ratio: 1;
+}
+
+.gallery .floating_content[data-images="regular"] > * {
+  aspect-ratio: 0;
+}
+
+.gallery .floating_content > *.lg {
+  max-inline-size: 25rem;
+}
+
+.gallery .floating_content > *.md {
+  max-inline-size: 20rem;
+}
+
+.gallery .floating_content > *.sm {
+  max-inline-size: 15rem;
+}
+.gallery .floating_content > *.xs {
+  max-inline-size: 10rem;
+}
+
+.gallery .floating_content::after {
+  content: "";
+  align-self: stretch;
+  padding-inline-end: max(
+    var(--space),
+    (100vw - var(--content-max-width)) / 2 - var(--space)
+  );
+}
+
+
+/* ========================== */
+/* ==== Topic box styles ==== */
+/* ========================== */
+
+.topicbox {
+  position: inherit;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 300px;
+  height: 225px;
+  margin: 30px;
+  color: #FFF;
+  font-size: 2em;
+  border: 1px solid black;
+
+  text-align: center;
+  line-height: 0;
+}
+
+.topicbox:hover{
+  cursor: pointer;
+}
+
+.topicbox:nth-child(5n + 1) {
+  background-color: var(--main-background-1);
+}
+.topicbox:nth-child(5n + 2) {
+  background-color: var(--main-background-2);
+}
+.topicbox:nth-child(5n + 3) {
+  background-color: var(--main-background-3);
+}
+.topicbox:nth-child(5n + 4) {
+  background-color: var(--main-background-4);
+}
+.topicbox:nth-child(5n + 5) {
+  background-color: var(--main-background-5);
+}
+
+.topicbox .topiclabel {
+  position: relative;
+  width: 100%;
+  height: fit-content;
+  margin: 0;
+  padding: 1rem;
+  background: rgba(0,0,0,.4);
+  box-sizing: border-box;
+  line-height: normal;
+}
+
+.topicbox img {
+  width: 300px;
+  height: 225px;
+  object-fit: cover;
+  transition: all .25s linear 0s;
+}
+.topicbox img:hover{
+  transform: scale(1.1);
+}
