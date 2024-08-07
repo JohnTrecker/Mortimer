@@ -6,7 +6,7 @@
 
 This project is a web client for the Syntopicon, an open API of ideas. Inspired by the 1952 edition of Encyclopedia Britannica's [Great Books of the Western World](https://archive.org/details/in.ernet.dli.2015.460726/page/n3), the name was coined by Mortimer J. Adler as a name for his "collection of ideas". Adler and his team thought the Syntopicon contained all the major contributions to 102 fundamental ideas around which competing schools of Western thought developed over the past 28 centuries. With over 500,000 references to the works of philosophers, scientists, and artists -- from Homer to Shakespeare, Euclid to Einstein, Aristotle to Descartes -- the Syntopicon is a monument of academic labor. But it has fallen into obscurity. This project hopes to revive its use and provide a useful tool for [syntopical readers](https://fs.blog/how-to-read-a-book), or anyone interested in persuing a more liberal education.
 
-![Logo of the project](https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP._gs9vEceLvwcZX0UbLzgIgHaI3%26pid%3DApi&f=1)
+![Adler indexing the Syntopicon](https://forum.zettelkasten.de/uploads/editor/98/4xccgbpfi3wi.jpg)
 
 
 ## Getting started
@@ -71,7 +71,7 @@ npm run dev
 
 ## Style guide
 
-`simplecss` is used for simplicity. Style sheets in teh `/styles` directory are imported as objects like so, `className={styles.flexRowCenter}`.
+`simplecss` is used for simplicity. Style sheets in the `/styles` directory are imported as objects like so, `className={styles.flexRowCenter}`.
 
 ## Api Reference
 
