@@ -14,6 +14,7 @@ interface Category extends Tables<'category'> {
 export interface Topic {
     name: string,
     id: number,
+    category_id: number,
     subtopics: Subtopic[],
 }
 
@@ -175,11 +176,16 @@ export default function PieChart({
                         {...pie}
                         animate={animate}
                         getKey={({ data: { name } }) => name}
-                        onClickDatum={({ data }) =>
-                            setSelectedTopic(
-                                selectedTopic && selectedTopic.name === data.name ? null : data,
-                            )
-                        }
+                        onClickDatum={({ data }) => {
+                            const shouldReinitializeSelectedTopic = selectedTopic?.name === data.name
+                            const shouldUpdateCategory = data.category_id !== selectedCategory?.id
+                            if (shouldReinitializeSelectedTopic) {
+                                return setSelectedTopic(null)
+                            }
+                            if (shouldUpdateCategory) {
+                                setSelectedCategory(categories.find(c => c.id === data.category_id) ?? null)
+                            }
+                        }}
                         getColor={({ data: { id } }) => getTopicColor(id)}
                         sub1={selectedSubtopic}
                     />
