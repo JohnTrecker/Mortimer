@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Pie, { ProvidedProps, PieArcDatum } from '@visx/shape/lib/shapes/Pie';
+import { Text } from '@visx/text';
 import { scaleOrdinal } from '@visx/scale';
 import { Group } from '@visx/group';
 import { GradientPinkBlue } from '@visx/gradient';
@@ -120,11 +121,12 @@ export default function PieChart({
                 {(pie) => (
                     <AnimatedPie<Category>
                         {...pie} 
-                        animate={false}
+                        animate={animate}
                         getKey={(arc) => arc.data.category}
-                        onClickDatum={({ data }) =>
+                        onClickDatum={({ data }) => {
                             setSelectedCategory(selectedCategory && data.category === selectedCategory.category ? null : data)
-                        }
+                            setSelectedTopic(null); setSelectedSubtopic(null); setSelectedSubtopic2(null); setSelectedSubtopic3(null); setSelectedSubtopic4(null)
+                        }}
                         getColor={(arc) => getCategoryColor(arc.data.id)}
                     />
                 )}
@@ -155,6 +157,7 @@ export default function PieChart({
                         getKey={({ data: { name } }) => name}
                         onClickDatum={({ data }) => {
                             animate && setSelectedTopic(selectedTopic?.name === data.name ? null : data)
+                            setSelectedSubtopic(null); setSelectedSubtopic2(null); setSelectedSubtopic3(null); setSelectedSubtopic4(null)
                         }}
                         getColor={({ data: { id } }) => getTopicColor(id)}
                     />
@@ -188,10 +191,11 @@ export default function PieChart({
                             if (!animate) return
                             const shouldReinitializeSelectedSubtopic = selectedSubtopic?.id === data.id
                             if (shouldReinitializeSelectedSubtopic) {
-                                return setSelectedSubtopic(null)
+                                setSelectedSubtopic(null)
                             } else {
                                 setSelectedSubtopic(data)
                             }
+                            setSelectedSubtopic2(null); setSelectedSubtopic3(null); setSelectedSubtopic4(null)
                         }}
                         onHoverDatum={({ data }) => {
                             setHoveredSubtopic(data)
@@ -225,11 +229,11 @@ export default function PieChart({
                             if (!animate) return
                             const shouldReinitializeSelectedSubtopic = selectedSubtopic2?.id === data.id
                             if (shouldReinitializeSelectedSubtopic) {
-                                return animate && setSelectedSubtopic2(null)
+                                setSelectedSubtopic2(null)
                             } else {
-                                animate &&
                                 setSelectedSubtopic2(data)
                             }
+                            setSelectedSubtopic3(null); setSelectedSubtopic4(null)
                         }}
                         onHoverDatum={({ data }) => {
                             setHoveredSubtopic(data)
@@ -263,11 +267,11 @@ export default function PieChart({
                             if (!animate) return
                             const shouldReinitializeSelectedSubtopic = selectedSubtopic3?.id === data.id
                             if (shouldReinitializeSelectedSubtopic) {
-                                return setSelectedSubtopic3(null)
+                                setSelectedSubtopic3(null)
                             } else {
-                                animate &&
                                 setSelectedSubtopic3(data)
                             }
+                            setSelectedSubtopic4(null)
                         }}
                         onHoverDatum={({ data }) => {
                             setHoveredSubtopic(data)
@@ -389,11 +393,16 @@ function AnimatedPie<Datum>({
     
     // subtopic specific logic
     const isSubtopic = Boolean(arc.data?.subtopic)
+    const isCategory = Boolean(arc.data?.category)
     const isSubtopicHovered = Boolean(hoveredSubtopic?.id === arc.data?.id)
 
-    // text to display
+    // text display
+    const x = isCategory ? centroidX * 1.8 : centroidX
+    const y = isCategory ? centroidY * 1.8 : centroidY
+    const dy= getKey(arc) === 'Life on Earth' ? '-1em' : '0'
+
     const text = isSubtopic
-        ? (isLevelSelected || isSubtopicHovered) ? getKey(arc) : null
+        ? (isLevelSelected || isSubtopicHovered) ? getKey(arc) : ''
         : getKey(arc)
 
     return (
@@ -413,19 +422,21 @@ function AnimatedPie<Datum>({
           onMouseEnter={() => onHoverDatum(arc)}
           onMouseLeave={() => onUnhoverDatum()}
         />
-        {hasSpaceForLabel && (
+        {(
           <animated.g style={{ opacity: props.opacity }}>
-                <text
+                <Text
                     fill="white"
-                    x={centroidX}
-                    y={centroidY}
-                    dy="0.33em"
+                    x={x}
+                    y={y}
+                    dy={dy}
                     fontSize="x-large"
                     textAnchor="middle"
+                    verticalAnchor="end"
                     pointerEvents="none"
+                    width={window.innerWidth * .8}
                 >
                     {text}
-                </text>
+                </Text>
           </animated.g>
         )}
       </g>
