@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import styles from '../styles/Container.module.css'
+import styles from '/styles/container.module.css'
 
 export default function CTA(){
     return (

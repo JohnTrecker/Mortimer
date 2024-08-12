@@ -3,7 +3,7 @@ import Layout from "./Scroller/Layout";
 import GalleryDiv from "./Scroller/GalleryDiv";
 import Link from 'next/link'
 import scrollerStyles from '/styles/Scroller.module.css'
-import containerStyles from '/styles/Container.module.css'
+import containerStyles from '/styles/container.module.css'
 
 export default function Categories({data}) {
 
