@@ -1,6 +1,6 @@
 import Head from 'next/head'
-import styles from '../styles/Home.module.css'
-import CTA from '../components/CTA'
+import styles from '/styles/Home.module.css'
+import CTA from '/components/CTA'
 
 export default function Home() {
   return (

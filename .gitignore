@@ -81,6 +81,7 @@ typings/
 # Nuxt.js build / generate output
 .nuxt
 dist
+database.types.ts*
 
 # Gatsby files
 .cache/
@@ -119,6 +120,7 @@ dist
 
 # production
 /build
+/supabase
 
 # misc
 .DS_Store
@@ -137,4 +139,4 @@ yarn-error.log*
 
 # vercel
 .vercel
-package-lock.json
+yarn.lock

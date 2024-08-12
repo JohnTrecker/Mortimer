@@ -6,12 +6,21 @@
     "json-server": "json-server --watch data/db.json --port 8000",
     "dev data": "concurrently \"next dev\" \"npm run json-server\"",
     "dev": "next dev",
+    "update-types": "npx supabase gen types --lang=typescript --project-id wodcvnvbrzlhvjcpojto > database.types.ts",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^1.24.0",
+    "@react-spring/web": "^9.7.4",
+    "@supabase/supabase-js": "^2.45.1",
+    "@visx/gradient": "^3.3.0",
+    "@visx/group": "^3.3.0",
+    "@visx/hierarchy": "^3.3.0",
+    "@visx/responsive": "^3.10.2",
+    "@visx/scale": "^3.5.0",
+    "@visx/shape": "^3.5.0",
+    "@visx/text": "^3.3.0",
     "next": "^12.2.5",
     "react": "17.0.2",
     "react-dom": "17.0.2",
@@ -19,9 +28,11 @@
   },
   "devDependencies": {
     "@types/react": "^18.3.3",
+    "@visx/mock-data": "^3.3.0",
     "concurrently": "^6.2.0",
     "eslint": "7.32.0",
     "eslint-config-next": "11.1.2",
-    "json-server": "^0.17.0"
+    "json-server": "^0.17.0",
+    "supabase": "^1.187.10"
   }
 }
