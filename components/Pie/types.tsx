@@ -1,5 +1,3 @@
-import { Tables } from "../../database.types.ts";
-
 export interface Category {
     id: number,
     category: string,
