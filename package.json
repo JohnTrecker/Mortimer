@@ -6,13 +6,14 @@
     "json-server": "json-server --watch data/db.json --port 8000",
     "dev data": "concurrently \"next dev\" \"npm run json-server\"",
     "dev": "next dev",
+    "update-types": "npx supabase gen types --lang=typescript --project-id wodcvnvbrzlhvjcpojto > database.types.ts",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
     "@react-spring/web": "^9.7.4",
-    "@supabase/supabase-js": "^1.24.0",
+    "@supabase/supabase-js": "^2.45.1",
     "@visx/gradient": "^3.3.0",
     "@visx/group": "^3.3.0",
     "@visx/hierarchy": "^3.3.0",
