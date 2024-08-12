@@ -7,7 +7,7 @@ export default function Search({search, clear}){
                 type="search"
                 onChange={search}
                 className={styles.input}
-                onAbort={clear}
+                // onAbort={clear}
                 placeholder="Search topics"
                 autoFocus
             />

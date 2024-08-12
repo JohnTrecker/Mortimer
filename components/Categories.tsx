@@ -15,7 +15,7 @@ export default function Categories({data}) {
                     <h3>{category}</h3>
                     <GalleryDiv>
                         {topics.map( ({name, id}) => 
-                        <Link href={`/topics/${id}`} prefetch={false}>
+                        <Link href={`/topics/${id}`} prefetch={false} key={`topic-${id}`}>
                             <li className={scrollerStyles.topicbox} key={id}>
                                 <p className={scrollerStyles.topiclabel}>{name}</p>
                             </li>
