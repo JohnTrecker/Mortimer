@@ -120,6 +120,7 @@ database.types.ts*
 
 # production
 /build
+/supabase
 
 # misc
 .DS_Store
