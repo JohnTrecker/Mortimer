@@ -1,7 +1,7 @@
 import OrderedList from '../../components/OrderedList'
 import Search from '../../components/Search'
 import Categories from '../../components/Categories'
-import PieChart from '../../components/Pie'
+import PieChart from '../../components/Pie/Pie'
 import useSearch from '../../hooks/useSearch'
 import { useFetch } from '../../hooks/useFetch'
 import ParentSize from '@visx/responsive/lib/components/ParentSize';

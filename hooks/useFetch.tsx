@@ -13,7 +13,7 @@ const URI = {
 const fetchCategories = (supabase) => {
     return supabase
         .from('category')
-        .select('id, category, topic(id, name, subtopics)')
+        .select('id, category, topic(id, name, category_id, subtopics)')
         .order('id', {descending: true})
 }
 
