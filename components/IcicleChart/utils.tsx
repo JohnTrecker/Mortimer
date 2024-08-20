@@ -1,4 +1,8 @@
-import { scaleOrdinal, quantize, hierarchy as _hierarchy, interpolateRainbow, partition, create, format as _format, Hierarchy, HierarchyRectangularNode} from 'd3';
+import { partition, hierarchy as _hierarchy, HierarchyRectangularNode} from 'd3-hierarchy';
+import { format as _format} from 'd3-format';
+import { scaleOrdinal} from 'd3-scale';
+import { interpolateRainbow} from 'd3-scale-chromatic';
+import {quantize} from 'd3-interpolate'
 import {Geneology, Target} from './types'
 
 // Create the color scale.
@@ -25,8 +29,37 @@ export const depthFirstTraversal = (node: HierarchyRectangularNode<Geneology>, c
     return callback(node)
 }
 
+export function breadthFirstTraversal(root: HierarchyRectangularNode<Geneology>, callback: Function) {
+    const queue = [root];
+
+    while (queue.length > 0) {
+      const node = queue.shift();
+
+      if (node) {
+        callback(node); // Add the node's value to the result array
+
+        // Add the node's children to the queue
+        if (node.children?.length) node.children.forEach(child => queue.push(child));
+      }
+    }
+  }
+
 export const getRectHeight = (d: HierarchyRectangularNode<Geneology> | Target): number =>
     d.x1 - d.x0 - Math.min(1, (d.x1 - d.x0) / 2);
 
 export const labelVisible = (d: HierarchyRectangularNode<Geneology>, width: number): boolean =>
     d.y1 <= width && d.y0 >= 0 && d.x1 - d.x0 > 16;
+
+export const partitionData = (data, width, height): HierarchyRectangularNode<Geneology>  => {
+    // Compute the layout.
+    const hierarchy = _hierarchy(data)
+        .sum(d => d.value)
+        .sort((a, b) => b.height - a.height || b.value - a.value);
+
+    const partitionLayout = partition()
+        .size([height, (hierarchy.height + 1) * width / 3])
+        .padding(0)
+        (hierarchy);
+
+    return partitionLayout as HierarchyRectangularNode<Geneology>
+}

@@ -1,26 +1,35 @@
 import React, {useState} from 'react';
-import {_color, getRectFill, genTarget, depthFirstTraversal, getRectHeight, labelVisible } from './utils';
-import { hierarchy as _hierarchy, format as _format, HierarchyRectangularNode} from 'd3';
+import {_color, getRectFill, genTarget, getRectHeight, labelVisible, partitionData, breadthFirstTraversal } from './utils';
+import { hierarchy as _hierarchy, HierarchyRectangularNode} from 'd3-hierarchy';
+import { format as _format} from 'd3-format';
 import { Geneology } from './types';
-import data from '../../data/zoomable-icicle-data.json';
 
-export default function Icicle({initialRoot, width, height}) {
-    const [focus, setFocus] = useState(initialRoot);
-    const [root, setRoot] = useState(initialRoot);
+interface Data {
+    value: string,
+    children: ReadonlyArray<Data>
+}
+interface Props {
+    data: Readonly<Data>
+    width: number
+    height: number
+}
+export default function Icicle({data, width, height}: Props) {
+    const initialData = partitionData(data, width, height)
+    const [root, setRoot] = useState(initialData);
+    const [focus, setFocus] = useState(root);
 
-    const transitionRectangles = (_, selectedNode: HierarchyRectangularNode<Geneology>) => {
-        setFocus(focus === selectedNode ? selectedNode.parent : selectedNode);
+    const transitionRectangles = (p: HierarchyRectangularNode<Geneology>) => {
+        const isFocused = focus.data.name === p.data.name
+        const newFocus = isFocused ? p.parent : p
 
-        const newRoot = Object.create(root)
-        depthFirstTraversal(newRoot, (d) => {
-            const target = genTarget(selectedNode, d, height)
-            const newHeight = getRectHeight(target)
+        if (!newFocus) return // root clicked
 
-            d.height = newHeight
-            d.x0 = target.x0
-            d.x1 = target.x1
-            d.y0 = target.y0
-            d.y1 = target.y1
+        setFocus(newFocus);
+        const newRoot = partitionData(data, width, height)
+
+        breadthFirstTraversal(newRoot, (d) => {
+            const target = genTarget(newFocus, d, height)
+            d.target = target
         });
         setRoot(newRoot)
     }
@@ -37,18 +46,18 @@ export default function Icicle({initialRoot, width, height}) {
        >
            {root.descendants().map((d: HierarchyRectangularNode<Geneology>) => {
                 const groupTitle = `${d.ancestors().map(d => d.data.name).reverse().join("/")}\n${format(d.value)}`
-                const translate = `translate(${d.y0},${d.x0})`
-                const rectHeight = getRectHeight(d);
+                const translation = d.target ? `translate(${d.target.y0},${d.target.x0})` : `translate(${d.y0},${d.x0})`
+                const rectHeight = getRectHeight(d.target ? d.target : d);
                 const rectFill = getRectFill(d, color);
-                const textFillOpacity = +labelVisible(d, width);
-                const tspanFillOpacity = +labelVisible(d, width) * 0.7;
+                const textFillOpacity = +labelVisible(d.target ? d.target : d, width);
+                const tspanFillOpacity = +labelVisible(d.target ? d.target : d, width) * 0.7;
                 const tspanValue = format(d.value)
 
                 return (
                     <g
-                        key={`${d.data.name}-${d.data.value}`}
-                        transform={translate}
-                        onClick={(event) => transitionRectangles(event, d)}
+                        key={`${d.data.name}-${tspanValue}`}
+                        transform={translation}
+                        onClick={(_) => transitionRectangles(d)}
                         style={{"cursor": "pointer", "transition": "all 0.6s ease"}}
                         className="group"
                     >
