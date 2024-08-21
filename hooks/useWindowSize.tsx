@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 
 function useWindowSize() {
   const [windowSize, setWindowSize] = useState({
-    width: 928, // mobile first
-    height: 1200,
+    width: 375, // mobile first
+    height: 1334,
   });
 
   useEffect(() => {
