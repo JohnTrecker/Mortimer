@@ -7,7 +7,7 @@ export interface Target {
 
 export interface Geneology {
     name: string;
-    value?: number;
-    children?: Geneology[];
+    value: number;
+    children: Geneology[];
     target?: Target;
 }

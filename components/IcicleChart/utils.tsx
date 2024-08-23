@@ -4,6 +4,7 @@ import { scaleOrdinal} from 'd3-scale';
 import { interpolateRainbow} from 'd3-scale-chromatic';
 import {quantize} from 'd3-interpolate'
 import {Geneology, Target} from './types'
+import { nestSubtopics } from '../../utils';
 
 // Create the color scale.
 export const _color = (numChildren: number): (s: string) => string => scaleOrdinal(quantize(interpolateRainbow, numChildren + 1));
@@ -44,15 +45,30 @@ export function breadthFirstTraversal(root: HierarchyRectangularNode<Geneology>,
     }
   }
 
-export const getRectHeight = (d: HierarchyRectangularNode<Geneology> | Target): number =>
+export const getRectHeight = (d: HierarchyRectangularNode<Geneology>): number =>
     d.x1 - d.x0 - Math.min(1, (d.x1 - d.x0) / 2);
 
 export const labelVisible = (d: HierarchyRectangularNode<Geneology>, width: number): boolean =>
-    d.y1 <= width && d.y0 >= 0 && d.x1 - d.x0 > 16;
+    d.y1 <= width && d.y0 >= 0 && d.x1 - d.x0 > 55;
+
+const nestData = (data: Geneology): Array<Geneology> => {
+    return data.children.map(category => ({
+        ...category,
+        children: category.children.map(topic =>
+            ({...topic, children: nestSubtopics(topic.children)}))}))
+
+}
 
 export const partitionData = (data, width, height): HierarchyRectangularNode<Geneology>  => {
     // Compute the layout.
-    const hierarchy = _hierarchy(data)
+    const nestedData = nestData(data)
+    const hierarchy = _hierarchy(
+        {name: 'Explore by Topic ', value: 9, children: nestedData},
+        (d) => {
+            d.value = d.children ? d.children.length + 1 : d.size ?? 0
+            return d.children
+        },
+    )
         .sum(d => d.value)
         .sort((a, b) => b.height - a.height || b.value - a.value);
 
