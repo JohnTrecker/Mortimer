@@ -5,11 +5,8 @@ import Link from 'next/link'
 import scrollerStyles from '/styles/Scroller.module.css'
 import containerStyles from '/styles/container.module.css'
 
-export default function Categories({data}) {
-
-    console.log({data})
-    return data.map(({id, category, topic: topics}) => (
-            
+const Categories = ({data}) =>
+    data.map(({id, category, topic: topics}) => (
             <section className={containerStyles.category} key={`category-${id}`}>
                 <Layout>
                     <h3>{category}</h3>
@@ -24,6 +21,6 @@ export default function Categories({data}) {
                     </GalleryDiv>
                 </Layout>
             </section>
-        ))
+        ));
 
-}
+export default Categories;
