@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {_color, getRectFill, genTarget, getRectHeight, labelVisible, partitionData, breadthFirstTraversal } from './utils';
+import {_color, genTarget, partitionData, breadthFirstTraversal } from './utils';
 import { hierarchy as _hierarchy, HierarchyRectangularNode} from 'd3-hierarchy';
 import { format as _format} from 'd3-format';
 import { Geneology } from './types';
@@ -40,8 +40,9 @@ export default function Icicle({data, width, height}: Props) {
            height={height}
            style={{"maxWidth": "100%", "height": "auto", "font": "10px sans-serif"}}
        >
-           {root.descendants().map((d: HierarchyRectangularNode<Geneology>) =>
-                <Rectangle 
+           {root.descendants().map((d: HierarchyRectangularNode<Geneology>, i) =>
+                <Rectangle
+                    key={`${d.data.name}-${i}`}
                     d={d}
                     width={width}
                     transitionRectangles={transitionRectangles}
