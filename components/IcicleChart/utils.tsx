@@ -49,7 +49,7 @@ export const getRectHeight = (d: HierarchyRectangularNode<Geneology>): number =>
     d.x1 - d.x0 - Math.min(1, (d.x1 - d.x0) / 2);
 
 export const labelVisible = (d: HierarchyRectangularNode<Geneology>, width: number): boolean =>
-    d.y1 <= width && d.y0 >= 0 && d.x1 - d.x0 > 55;
+    d.y1 <= width && d.y0 >= 0 && d.x1 - d.x0 > 40;
 
 const nestData = (data: Geneology): Array<Geneology> => {
     return data.children.map(category => ({
@@ -74,7 +74,6 @@ export const partitionData = (data, width, height): HierarchyRectangularNode<Gen
 
     const partitionLayout = partition()
         .size([height, (hierarchy.height + 1) * width / 3])
-        .padding(0)
         (hierarchy);
 
     return partitionLayout as HierarchyRectangularNode<Geneology>

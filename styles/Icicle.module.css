@@ -1,0 +1,26 @@
+.group {
+    cursor: pointer;
+    transition: all 0.8s;
+}
+
+.text {
+    font-size: 1rem;
+    overflow: hidden;
+    overflow-wrap: normal;
+}
+
+.toggle{
+    margin-top: 1rem;
+    color: blue;
+    text-decoration: underline;
+}
+
+.title {
+    font-size: 1rem;
+}
+
+.svg {
+    max-width: 100%;
+    height: auto;
+    font: 10px calibri;
+}

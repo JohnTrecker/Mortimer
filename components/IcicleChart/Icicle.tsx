@@ -4,6 +4,7 @@ import { hierarchy as _hierarchy, HierarchyRectangularNode} from 'd3-hierarchy';
 import { format as _format} from 'd3-format';
 import { Geneology } from './types';
 import Rectangle from './Rectangle';
+import styles from '/styles/Icicle.module.css'
 
 interface Props {
     data: Readonly<Geneology>
@@ -15,16 +16,27 @@ export default function Icicle({data, width, height}: Props) {
     const [root, setRoot] = useState(initialData);
     const [focus, setFocus] = useState(root);
 
-    const transitionRectangles = (p: HierarchyRectangularNode<Geneology>) => {
-        const isFocused = focus.data.name === p.data.name
-        const newFocus = isFocused ? p.parent : p
-
+    const transitionRectangles = (clickedRect: HierarchyRectangularNode<Geneology>, suppressChildren: boolean) => {
+        const isFocused = focus.data.name === clickedRect.data.name
+        const newFocus = (suppressChildren || !isFocused)
+            ? clickedRect : clickedRect.parent
+        
         if (!newFocus) return // root clicked
 
         setFocus(newFocus);
         const newRoot = partitionData(data, width, height)
 
         breadthFirstTraversal(newRoot, (d) => {
+            const isSupressableNode = d.parent?.data.name === clickedRect.data.name && suppressChildren
+
+            if (isSupressableNode) {
+                d.x0 = 0
+                d.x1 = 1
+                d.y0 = 0
+                d.y1 = 1
+                d.target = undefined
+                return
+            }
             const target = genTarget(newFocus, d, height)
             d.target = target
         });
@@ -34,21 +46,24 @@ export default function Icicle({data, width, height}: Props) {
     const color = _color(data.children?.length ?? 1)
 
     return (
-       <svg
-           viewBox={`[0, 0, ${width}, ${height}]`}
-           width={width}
-           height={height}
-           style={{"maxWidth": "100%", "height": "auto", "font": "10px sans-serif"}}
-       >
-           {root.descendants().map((d: HierarchyRectangularNode<Geneology>, i) =>
-                <Rectangle
-                    key={`${d.data.name}-${i}`}
-                    d={d}
-                    width={width}
-                    transitionRectangles={transitionRectangles}
-                    color={color}
-                />
-            )}
-        </svg>
+        <>
+            <svg
+                viewBox={`[0, 0, ${width}, ${height}]`}
+                width={width}
+                height={height}
+                className={styles.svg}
+            >
+            {root.descendants().map((d: HierarchyRectangularNode<Geneology>, i) =>
+                    <Rectangle
+                        key={`${d.data.name}-${i}`}
+                        d={d}
+                        width={width}
+                        transitionRectangles={transitionRectangles}
+                        color={color}
+                    />
+                )}
+            </svg>
+        </>
+
     )
 }

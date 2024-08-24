@@ -3,29 +3,37 @@ import {HierarchyRectangularNode} from 'd3-hierarchy';
 import { Geneology } from './types';
 import { format as _format} from 'd3-format';
 import { getRectFill, getRectHeight, labelVisible } from './utils';
-import { Text } from '@visx/text';
+import styles from '../../styles/Icicle.module.css'
 
 interface Props {
     width: number,
     d: HierarchyRectangularNode<Geneology>,
-    transitionRectangles: (_) => void,
+    transitionRectangles: (d: HierarchyRectangularNode<Geneology> ,b: boolean) => void,
     color: (s: string) => string,
 }
 
 export default function Rectangle({d, color, width, transitionRectangles}: Props) {
+    const [showChildren, setShowChildren] = React.useState<boolean>(true);
+
     const format = _format(",d");
-    const groupTitle = `${d.ancestors().map(d => d.data.name).reverse().join(" > ")}\nClick to view ${format(d.value)} Subtopics`
+    const groupTitle = `${d.ancestors().map(d => d.data.name).reverse().join(" > ")}\n\nClick to view ${format(d.value)} Subtopics`
     const translation = d.target ? `translate(${d.target.y0},${d.target.x0})` : `translate(${d.y0},${d.x0})`
     const rectHeight = getRectHeight(d.target ? d.target : d);
     const rectFill = getRectFill(d, color);
-    const textDisplay = +labelVisible(d.target ? d.target : d, width) ? "block" : "none";
+    const shouldDisplayText = labelVisible(d.target ? d.target : d, width)
+    const showToggleRefs = d.data.is_referenced && d.data.children && d.data.children.length > 0
+
+    const handleShowRefs = (e, d) => {
+        e.stopPropagation()
+        transitionRectangles(d, true)
+        setShowChildren(!showChildren)
+    }
 
     return (
         <g
             transform={translation}
-            onClick={(_) => transitionRectangles(d)}
-            style={{"cursor": "pointer", "transition": "all 0.6s ease"}}
-            className="group"
+            onClick={(_) => transitionRectangles(d, false)}
+            className={styles.group}
         >
             <rect
                 width={d.y1 - d.y0 - 1}
@@ -33,28 +41,17 @@ export default function Rectangle({d, color, width, transitionRectangles}: Props
                 fillOpacity={0.6}
                 fill={rectFill}
             />
-            <Text
-                y={12}
+            {shouldDisplayText && <foreignObject
+                width={d.y1 - d.y0 - 16}
+                height={rectHeight - 8}
                 x={10}
-                verticalAnchor="start"
-                width={width / 3}
-                fontSize='1rem'
-                style={{"display": textDisplay}}
             >
-                    {d.data.name}
-            </Text>
+                <p className={styles.text}>{d.data.name}</p>
+                {showToggleRefs && <p className={styles.toggle} onClick={(e) => handleShowRefs(e,d)}>show references</p>}
+            </foreignObject>}
         <title>
             {groupTitle}
-            <p style={{'fontSize': '100px'}}> &#128073;</p>
+            <p className={styles.title}> &#128073;</p>
         </title>
     </g>
 )}
-/* <text
-    x={4}
-    y={13}
-    fillOpacity={textFillOpacity}
-    style={{"userSelect": "none", "wordWrap": "normal"}}
-    pointerEvents="none"
-> */
-/* <tspan style={{"whiteSpace": "normal"}}> */
-/* </tspan> */
