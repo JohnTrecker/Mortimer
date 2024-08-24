@@ -67,7 +67,3 @@ details summary a,
 .clickable {
   cursor: pointer;
 }
-
-.group {
-  transition: all 0.75s ease;
-}
