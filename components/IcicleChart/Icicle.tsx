@@ -2,12 +2,13 @@ import React, {useState} from 'react';
 import {_color, genTarget, partitionData, breadthFirstTraversal } from './utils';
 import { hierarchy as _hierarchy, HierarchyRectangularNode} from 'd3-hierarchy';
 import { format as _format} from 'd3-format';
-import { Geneology } from './types';
+import { Geneology, Tree } from './types';
 import Rectangle from './Rectangle';
 import styles from '/styles/Icicle.module.css'
+import { Category } from './types';
 
 interface Props {
-    data: Readonly<Geneology>
+    data: Category[]
     width: number
     height: number
 }
@@ -43,27 +44,24 @@ export default function Icicle({data, width, height}: Props) {
         setRoot(newRoot)
     }
 
-    const color = _color(data.children?.length ?? 1)
+    const color = _color(data.length ?? 1)
 
     return (
-        <>
-            <svg
-                viewBox={`[0, 0, ${width}, ${height}]`}
-                width={width}
-                height={height}
-                className={styles.svg}
-            >
-            {root.descendants().map((d: HierarchyRectangularNode<Geneology>, i) =>
-                    <Rectangle
-                        key={`${d.data.name}-${i}`}
-                        d={d}
-                        width={width}
-                        transitionRectangles={transitionRectangles}
-                        color={color}
-                    />
-                )}
-            </svg>
-        </>
-
+        <svg
+            viewBox={`[0, 0, ${width}, ${height}]`}
+            width={width}
+            height={height}
+            className={styles.svg}
+        >
+        {root.descendants().map((d: Tree, i) =>
+                <Rectangle
+                    key={`${d.data.name}-${i}`}
+                    d={d}
+                    width={width}
+                    transitionRectangles={transitionRectangles}
+                    color={color}
+                />
+            )}
+        </svg>
     )
 }

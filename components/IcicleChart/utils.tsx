@@ -3,8 +3,8 @@ import { format as _format} from 'd3-format';
 import { scaleOrdinal} from 'd3-scale';
 import { interpolateRainbow} from 'd3-scale-chromatic';
 import {quantize} from 'd3-interpolate'
-import {Geneology, Target} from './types'
-import { Category, Subtopic, NestedSuptopic } from './types';
+import {Geneology, Target, Tree} from './types'
+import { Category, Subtopic, NestedSubtopic } from './types';
 // Create the color scale.
 export const _color = (numChildren: number): (s: string) => string => scaleOrdinal(quantize(interpolateRainbow, numChildren + 1));
 
@@ -44,10 +44,10 @@ export function breadthFirstTraversal(root: HierarchyRectangularNode<Geneology>,
     }
   }
 
-export const getRectHeight = (d: HierarchyRectangularNode<Geneology>): number =>
+export const getRectHeight = (d: Target): number =>
     d.x1 - d.x0 - Math.min(1, (d.x1 - d.x0) / 2);
 
-export const labelVisible = (d: HierarchyRectangularNode<Geneology>, width: number): boolean =>
+export const labelVisible = (d: Target, width: number): boolean =>
     d.y1 <= width && d.y0 >= 0 && d.x1 - d.x0 > 40;
 
 function sortSubsByAltId(subs) {
@@ -65,7 +65,7 @@ function sortSubsByAltId(subs) {
     });
 }
 
-export const nestSubtopics = (subs: Subtopic[]): NestedSuptopic[] => { // TODO: deprecate once data formatted in server
+export const nestSubtopics = (subs: Subtopic[]): NestedSubtopic[] => { // TODO: deprecate once data formatted in server
     const memo = {}
     const alpha = 'abcdefghijklmnopqrstuvwxyz'
         .split('')
@@ -105,8 +105,9 @@ export const partitionData = (data: Category[], width: number, height: number): 
     const nestedData = nestData(data)
     const hierarchy = _hierarchy(
         {name: 'Explore by Topic ', value: 9, children: nestedData},
+        // @ts-ignore
         (d) => {
-            d.value = d.children ? d.children.length + 1 : d.size ?? 0
+            d.value = d.children ? d.children.length + 1 : 2
             return d.children
         },
     )
@@ -117,5 +118,5 @@ export const partitionData = (data: Category[], width: number, height: number): 
         .size([height, (hierarchy.height + 1) * width / 3])
         (hierarchy);
 
-    return partitionLayout as HierarchyRectangularNode<Geneology>
+    return partitionLayout as Tree
 }

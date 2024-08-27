@@ -1,4 +1,4 @@
-import '../styles/globals.css'
+import '/styles/globals.css'
 import useSupabase from '../hooks/useSupabase'
 
 function MyApp({ Component, pageProps }) {

@@ -1,14 +1,15 @@
 import React from 'react'
 import {HierarchyRectangularNode} from 'd3-hierarchy';
-import { Geneology } from './types';
+import { Geneology, Tree, Category, Topic, NestedSubtopic } from './types';
 import { format as _format} from 'd3-format';
 import { getRectFill, getRectHeight, labelVisible } from './utils';
 import styles from '../../styles/Icicle.module.css'
 
 interface Props {
     width: number,
-    d: HierarchyRectangularNode<Geneology>,
-    transitionRectangles: (d: HierarchyRectangularNode<Geneology> ,b: boolean) => void,
+    d: Tree,    
+    // transitionRectangles: (d: HierarchyRectangularNode<Geneology> ,b: boolean) => void,
+    transitionRectangles: (d: Tree, b: boolean) => void,
     color: (s: string) => string,
 }
 
