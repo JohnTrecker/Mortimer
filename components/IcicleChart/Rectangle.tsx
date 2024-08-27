@@ -8,7 +8,6 @@ import styles from '../../styles/Icicle.module.css'
 interface Props {
     width: number,
     d: Tree,    
-    // transitionRectangles: (d: HierarchyRectangularNode<Geneology> ,b: boolean) => void,
     transitionRectangles: (d: Tree, b: boolean) => void,
     color: (s: string) => string,
 }
@@ -52,7 +51,7 @@ export default function Rectangle({d, color, width, transitionRectangles}: Props
             </foreignObject>}
         <title>
             {groupTitle}
-            <p className={styles.title}> &#128073;</p>
+            {/* <p className={styles.title}> &#128073;</p> */}
         </title>
     </g>
 )}
