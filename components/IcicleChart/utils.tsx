@@ -4,8 +4,7 @@ import { scaleOrdinal} from 'd3-scale';
 import { interpolateRainbow} from 'd3-scale-chromatic';
 import {quantize} from 'd3-interpolate'
 import {Geneology, Target} from './types'
-import { nestSubtopics } from '../../utils';
-
+import { Category, Subtopic, NestedSuptopic } from './types';
 // Create the color scale.
 export const _color = (numChildren: number): (s: string) => string => scaleOrdinal(quantize(interpolateRainbow, numChildren + 1));
 
@@ -51,15 +50,57 @@ export const getRectHeight = (d: HierarchyRectangularNode<Geneology>): number =>
 export const labelVisible = (d: HierarchyRectangularNode<Geneology>, width: number): boolean =>
     d.y1 <= width && d.y0 >= 0 && d.x1 - d.x0 > 40;
 
-const nestData = (data: Geneology): Array<Geneology> => {
-    return data.children.map(category => ({
+function sortSubsByAltId(subs) {
+    // Can we do this on the server?
+    return subs.sort((a, b) => {
+        const getId = (sub) => sub.alt_id.replace(/\D/g, '.').split('.').map(Number);
+        const idA = getId(a);
+        const idB = getId(b);
+        for (let i = 0; i < Math.max(idA.length, idB.length); i++) {
+            if (idA[i] === undefined) return -1;
+            if (idB[i] === undefined) return 1;
+            if (idA[i] !== idB[i]) return idA[i] - idB[i];
+        }
+        return 0;
+    });
+}
+
+export const nestSubtopics = (subs: Subtopic[]): NestedSuptopic[] => { // TODO: deprecate once data formatted in server
+    const memo = {}
+    const alpha = 'abcdefghijklmnopqrstuvwxyz'
+        .split('')
+        .reduce((memo, letter, number) => ({...memo, [letter]: number}), {})
+
+    for (let sub of sortSubsByAltId(subs)) {
+        const { alt_id } = sub
+        const [primary, secondary, tertiary] = alt_id.split('.')
+
+        if (tertiary) {
+            memo[primary].children[alpha[secondary]].children.push({...sub})
+            continue
+        }
+        if (secondary) {
+            memo[primary].children.push({...sub, children: []})
+            continue
+        }
+        if (primary) {
+            memo[primary] = {...sub, children: []}
+            continue
+        }
+    }
+
+    return Object.values(memo)
+}
+
+const nestData = (data: Category[]): Category[] => {
+    return data.map(category => ({
         ...category,
         children: category.children.map(topic =>
             ({...topic, children: nestSubtopics(topic.children)}))}))
 
 }
 
-export const partitionData = (data, width, height): HierarchyRectangularNode<Geneology>  => {
+export const partitionData = (data: Category[], width: number, height: number): HierarchyRectangularNode<Geneology>  => {
     // Compute the layout.
     const nestedData = nestData(data)
     const hierarchy = _hierarchy(
