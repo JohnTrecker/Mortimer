@@ -2,6 +2,7 @@
 
 body {
   grid-template-columns: none;
+  font: baskerville san serif;
 }
 ol,ul {padding-left: 0px !important}
 

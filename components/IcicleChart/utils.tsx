@@ -44,7 +44,7 @@ export function breadthFirstTraversal(root: HierarchyRectangularNode<Geneology>,
     }
   }
 
-export const getRectHeight = (d: Target): number =>
+export const getRectHeight = (d: Tree): number =>
     d.x1 - d.x0 - Math.min(1, (d.x1 - d.x0) / 2);
 
 export const labelVisible = (d: Target, width: number): boolean =>
@@ -101,13 +101,12 @@ const nestData = (data: Category[]): Category[] => {
 }
 
 export const partitionData = (data: Category[], width: number, height: number): HierarchyRectangularNode<Geneology>  => {
-    // Compute the layout.
     const nestedData = nestData(data)
     const hierarchy = _hierarchy(
-        {name: 'Explore by Topic ', value: 9, children: nestedData},
+        {name: 'Explore by Topic ', value: 1, children: nestedData},
         // @ts-ignore
         (d) => {
-            d.value = d.children ? d.children.length + 1 : 2
+            d.value = 1
             return d.children
         },
     )

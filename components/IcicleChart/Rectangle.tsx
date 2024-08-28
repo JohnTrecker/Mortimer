@@ -1,6 +1,5 @@
 import React from 'react'
-import {HierarchyRectangularNode} from 'd3-hierarchy';
-import { Geneology, Tree, Category, Topic, NestedSubtopic } from './types';
+import { Tree } from './types';
 import { format as _format} from 'd3-format';
 import { getRectFill, getRectHeight, labelVisible } from './utils';
 import styles from '../../styles/Icicle.module.css'
@@ -21,7 +20,7 @@ export default function Rectangle({d, color, width, transitionRectangles}: Props
     const rectHeight = getRectHeight(d.target ? d.target : d);
     const rectFill = getRectFill(d, color);
     const shouldDisplayText = labelVisible(d.target ? d.target : d, width)
-    const showToggleRefs = d.data.is_referenced && d.data.children && d.data.children.length > 0
+    const showToggleRefs = d.data.is_referenced && d.data.children?.length > 0
 
     const handleShowRefs = (e, d) => {
         e.stopPropagation()
@@ -42,9 +41,8 @@ export default function Rectangle({d, color, width, transitionRectangles}: Props
                 fill={rectFill}
             />
             {shouldDisplayText && <foreignObject
-                width={d.y1 - d.y0 - 16}
-                height={rectHeight - 8}
-                x={10}
+                width={d.y1 - d.y0}
+                height={rectHeight}
             >
                 <p className={styles.text}>{d.data.name}</p>
                 {showToggleRefs && <p className={styles.toggle} onClick={(e) => handleShowRefs(e,d)}>show references</p>}
