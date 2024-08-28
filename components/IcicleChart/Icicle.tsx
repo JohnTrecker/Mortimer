@@ -21,7 +21,7 @@ export default function Icicle({data, width, height}: Props) {
     const transitionRectangles = useCallback((clickedRect: HierarchyRectangularNode<Geneology>, suppressChildren: boolean) => {
         const isFocused = focus.data.name === clickedRect.data.name;
         const newFocus = (suppressChildren || !isFocused) ? clickedRect : clickedRect.parent;
-        
+
         if (!newFocus) return; // root clicked
 
         setFocus(newFocus);
