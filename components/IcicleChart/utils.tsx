@@ -3,8 +3,8 @@ import { format as _format} from 'd3-format';
 import { scaleOrdinal} from 'd3-scale';
 import { interpolateRainbow} from 'd3-scale-chromatic';
 import {quantize} from 'd3-interpolate'
-import {Geneology, Target, Tree} from './types'
-import { Category, Subtopic, NestedSubtopic } from './types';
+import {Geneology, Target, Tree, Category, Subtopic, NestedSubtopic} from './types'
+import { NUM_SECTIONS_VISIBLE } from './constants';
 // Create the color scale.
 export const _color = (numChildren: number): (s: string) => string => scaleOrdinal(quantize(interpolateRainbow, numChildren + 1));
 
@@ -44,11 +44,15 @@ export function breadthFirstTraversal(root: HierarchyRectangularNode<Geneology>,
     }
   }
 
-export const getRectHeight = (d: Tree): number =>
+export const getRectHeight = (d: Target): number =>
     d.x1 - d.x0 - Math.min(1, (d.x1 - d.x0) / 2);
 
-export const labelVisible = (d: Target, width: number): boolean =>
-    d.y1 <= width && d.y0 >= 0 && d.x1 - d.x0 > 40;
+export const labelVisible = (d: Tree, width: number, focusDepth: number): boolean => {
+    // show only focus depth + child depth and show only labels that fit.
+    if (d.depth - focusDepth > 1) return false
+    const D = d.target ?? d;
+    return D.y1 <= width && D.y0 >= 0 && D.x1 - D.x0 > 20;
+}
 
 function sortSubsByAltId(subs) {
     // Can we do this on the server?
@@ -114,7 +118,7 @@ export const partitionData = (data: Category[], width: number, height: number): 
         .sort((a, b) => b.height - a.height || b.value - a.value);
 
     const partitionLayout = partition()
-        .size([height, (hierarchy.height + 1) * width / 3])
+        .size([height, (hierarchy.height + 1) * width / NUM_SECTIONS_VISIBLE])
         (hierarchy);
 
     return partitionLayout as Tree

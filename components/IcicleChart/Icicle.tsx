@@ -3,7 +3,7 @@ import { _color, genTarget, partitionData, breadthFirstTraversal } from './utils
 import { HierarchyRectangularNode } from 'd3-hierarchy';
 import { Geneology, Tree, Category } from './types';
 import Rectangle from './Rectangle';
-import styles from '/styles/Icicle.module.css'
+import styles from '@/styles/Icicle.module.css'
 
 interface Props {
     data: Category[]
@@ -42,16 +42,21 @@ export default function Icicle({data, width, height}: Props) {
     }, [data, width, height, focus]);
 
     const rectangles = useMemo(() => 
-        root.descendants().map((d: Tree, i) => (
-            <Rectangle
-                key={`${d.data.name}-${i}`}
-                d={d}
-                width={width}
-                transitionRectangles={transitionRectangles}
-                color={color}
-            />
-        )),
-    [root, width, transitionRectangles, color]);
+        root.descendants()
+            .map((d: Tree, i) => {
+                // const showRefs = focus.data.name === d.data.name && d.data.is_referenced
+                return (
+                    <Rectangle
+                        key={`${d.data.id}-${i}`}
+                        d={d}
+                        width={width}
+                        color={color}
+                        focusDepth={focus.depth}
+                        transition={transitionRectangles}
+                    />
+                )
+            }),
+    [width, transitionRectangles]);
 
     return (
         <svg
