@@ -1,11 +1,10 @@
 "use client"
 
-import React, {useState, memo} from 'react'
+import React, {useState} from 'react'
 import { Tree } from './types';
 import { format as _format} from 'd3-format';
-import { getRectFill, getRectHeight, labelVisible } from './utils';
+import { getRectProps } from './utils';
 import styles from '@/styles/Icicle.module.css'
-import Reference from '@/components/Reference/Reference'
 import Link from 'next/link';
 
 interface Props {
@@ -20,13 +19,15 @@ export default function Rectangle({d, color, width, focusDepth, transition}: Pro
     const [showChildren, setShowChildren] = useState<boolean>(true);
 
     const format = _format(",d");
-    const groupTitle = `${d.ancestors().map(d => d.data.name).reverse().join(" > ")}\n\nClick to view ${format(d.value)} Subtopics`
-    const translation = d.target ? `translate(${d.target.y0},${d.target.x0})` : `translate(${d.y0},${d.x0})`
-    const rectHeight = getRectHeight(d.target ? d.target : d);
-    const rectFill = getRectFill(d, color);
-    const shouldDisplayText = labelVisible(d, width, focusDepth)
-    const showToggleRefs = d.data.is_referenced && d.data.children?.length > 0
-    const href = d.data.is_referenced ? `/subtopics/${d.data.id}` : null
+    const groupTitle = `${d.ancestors().map(d => d.data.name).reverse().join(" > ")}\n\nClick to view ${format(d.data.children?.length)} Subtopics`
+    const {
+        translation,
+        rectHeight,
+        rectFill,
+        shouldDisplayText,
+        showToggleRefs,
+        href
+    } = getRectProps(d, color, width, focusDepth);
 
     const handleShowRefs = (e, d) => {
         e.stopPropagation()

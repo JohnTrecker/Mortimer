@@ -42,10 +42,23 @@ export function breadthFirstTraversal(root: HierarchyRectangularNode<Geneology>,
         if (node.children?.length) node.children.forEach(child => queue.push(child));
       }
     }
-  }
+}
 
-export const getRectHeight = (d: Target): number =>
-    d.x1 - d.x0 - Math.min(1, (d.x1 - d.x0) / 2);
+export function getRectProps(d: Tree, color: Function, width: number, focusDepth: number) {
+    const D = d.target ?? d
+    const translation = `translate(${D.y0},${D.x0})`
+    const rectHeight = D.x1 - D.x0 - Math.min(1, (D.x1 - D.x0) / 2);
+    const rectFill = getRectFill(d, color);
+    const shouldDisplayText = labelVisible(d, width, focusDepth)
+    const showToggleRefs = d.data.is_referenced && d.data.children?.length > 0
+    const href = d.data.is_referenced ? `/subtopics/${d.data.id}` : null
+    return {translation, rectHeight, rectFill, shouldDisplayText, showToggleRefs, href}
+};
+
+export const getRectHeight = (d: Tree): number => {
+    const D = d.target ? d.target : d
+    return D.x1 - D.x0 - Math.min(1, (D.x1 - D.x0) / 2);
+}
 
 export const labelVisible = (d: Tree, width: number, focusDepth: number): boolean => {
     // show only focus depth + child depth and show only labels that fit.
@@ -104,18 +117,13 @@ const nestData = (data: Category[]): Category[] => {
 
 }
 
-export const partitionData = (data: Category[], width: number, height: number): HierarchyRectangularNode<Geneology>  => {
+export const partitionData = (data: Category[], width: number, height: number): HierarchyRectangularNode<Geneology> => {
     const nestedData = nestData(data)
     const hierarchy = _hierarchy(
-        {name: 'Explore by Topic ', value: 1, children: nestedData},
-        // @ts-ignore
-        (d) => {
-            d.value = 1
-            return d.children
-        },
+        {name: 'Explore by Topic ', children: nestedData},
     )
-        .sum(d => d.value)
-        .sort((a, b) => b.height - a.height || b.value - a.value);
+        .count()
+        .sort((a, b) => a.children?.length - b.children?.length); // shortest first
 
     const partitionLayout = partition()
         .size([height, (hierarchy.height + 1) * width / NUM_SECTIONS_VISIBLE])
