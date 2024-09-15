@@ -71,16 +71,16 @@ export default function PieChart({
     const subtopicSegment = (_) => 0.2;
 
     // color scales
-    const categoryRange = [...[...Array(10).keys()].map((i) => `rgba(93,30,91,${i === 0 ? 1.0 : 0.1 * i})`)]
+    const categoryRange = Array.from({ length: 10 }, (_, i) => `rgba(93,30,91,${i === 0 ? 1.0 : 0.1 * i})`)
     const getCategoryColor = scaleOrdinal({
         domain: categories.map((c) => c.id),
         range: categoryRange,
     });
     // returns a continoius range of colors from white to white
-    function getContinuiousRange(n: number) { 
-        const firstHalf = [...Array(Math.round(n/2 + 1)).keys()].slice(1)
+    function getContinuiousRange(n: number) {
+        const firstHalf = Array.from({ length: Math.round(n/2 + 1) }, (_, i) => i).slice(1)
         const secondHalf = [...firstHalf].reverse()
-        return [...firstHalf, ...secondHalf]    
+        return [...firstHalf, ...secondHalf]
     }
     const getTopicColor = scaleOrdinal({
         domain: topics.map((t) => t.id),
@@ -355,7 +355,7 @@ const enterUpdateTransition = ({ startAngle, endAngle }: PieArcDatum<any>) => ({
   opacity: 1,
 });
 
-type AnimatedPieProps<Datum> = ProvidedProps<Datum> & {
+type AnimatedPieProps<Datum extends Category | Topic | Subtopic> = ProvidedProps<Datum> & {
   animate?: boolean;
   getKey: (d: PieArcDatum<Datum>) => string;
   getColor: (d: PieArcDatum<Datum>) => string;
@@ -367,7 +367,7 @@ type AnimatedPieProps<Datum> = ProvidedProps<Datum> & {
   isLevelSelected?: boolean;
 };
 
-function AnimatedPie<Datum>({
+function AnimatedPie<Datum extends Category | Topic | Subtopic>({
   animate,
   arcs,
   path,
@@ -392,9 +392,9 @@ function AnimatedPie<Datum>({
     const hasSpaceForLabel = arc.endAngle - arc.startAngle >= 0.2;
     
     // subtopic specific logic
-    const isSubtopic = Boolean(arc.data?.subtopic)
-    const isCategory = Boolean(arc.data?.category)
-    const isSubtopicHovered = Boolean(hoveredSubtopic?.id === arc.data?.id)
+    const isSubtopic = 'subtopic' in arc.data;
+    const isCategory = 'category' in arc. data;
+    const isSubtopicHovered = Boolean(isSubtopic && hoveredSubtopic?.id === arc.data?.id)
 
     // text display
     const x = isCategory ? centroidX * 1.8 : centroidX
