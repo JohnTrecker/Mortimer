@@ -1,8 +1,8 @@
-import OrderedList from '../../components/OrderedList'
-import { useFetch } from '../../hooks/useFetch'
+import OrderedList from '@/components/OrderedList'
+import { useFetch } from '@/hooks/useFetch'
 
-const SubtopicList = ({supabase}) => {
-    const {data, loading, error} = useFetch('subtopics', supabase)
+const SubtopicList = () => {
+    const {data, loading, error} = useFetch('subtopics')
 
     if (loading) return <p>Loading...</p>
     if (error) return <p>Error fetching subtopics. Try again in a minute.</p>
@@ -12,8 +12,9 @@ const SubtopicList = ({supabase}) => {
                 path='/subtopics/'
                 nameKey='description'
                 indent
-                children={undefined}
-            />
+            >
+                <></>
+            </OrderedList>
 }
 
 export default SubtopicList;

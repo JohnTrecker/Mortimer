@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useContext} from 'react';
 import { extractExcerpt, mockResponse, nestSubtopics } from '../utils'
+import { SupabaseContext } from '@/context/supabase';
 
 const URI = {
     CATEGORIES: 'categories',
@@ -62,11 +63,13 @@ const _fetch = ({uri, id, supabase}) => {
 }
 
 
-export const useFetch = (uri: string, supabase) => {
+export const useFetch = (uri: string) => {
     const [data, setData] = useState([])
     const [error, setError] = useState(undefined)
     const [loading, setLoading] = useState(true)
     const router = useRouter()
+    const {supabase} = useContext(SupabaseContext)
+
     const { id } = router.query
 
     useEffect(() => {
@@ -109,7 +112,7 @@ export const useFetch = (uri: string, supabase) => {
                     setLoading(false);
                 })
             }
-        
+
         _fetch({uri, id, supabase})
             .then(handleResponse)
             .catch(handleError);

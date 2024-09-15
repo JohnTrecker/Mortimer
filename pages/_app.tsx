@@ -1,9 +1,12 @@
-import '/styles/globals.css'
-import useSupabase from '../hooks/useSupabase'
+import '@/styles/globals.css'
+import { SupabaseProvider } from '@/context/supabase'
 
 function MyApp({ Component, pageProps }) {
-  const {session, supabase} = useSupabase()
-  return <Component session={session} supabase={supabase} {...pageProps} />
+  return (
+    <SupabaseProvider>
+      <Component {...pageProps} />
+    </SupabaseProvider>
+    )
 }
 
 export default MyApp
