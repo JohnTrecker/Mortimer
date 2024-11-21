@@ -61,7 +61,6 @@ const _fetch = ({uri, id, supabase}) => {
     }
 }
 
-
 export const useFetch = (uri: string, supabase) => {
     const [data, setData] = useState([])
     const [error, setError] = useState(undefined)

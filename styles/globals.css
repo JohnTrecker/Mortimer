@@ -1,7 +1,7 @@
 @import url('~simpledotcss/simple.min.css');
 
 body {
-  grid-template-columns: none;
+  grid-template-columns: 30% 40% 30%;
 }
 ol,ul {padding-left: 0px !important}
 
