@@ -1,7 +1,6 @@
 
 
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import { Providers } from "./providers";
 // import { Auth } from '@supabase/auth-ui-react'
 // import { ThemeSupa } from '@supabase/auth-ui-shared'
