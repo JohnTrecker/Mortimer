@@ -1,3 +1,5 @@
+'use client'
+
 import Head from 'next/head'
 import styles from '@/styles/Home.module.css'
 import CTA from '@/components/CTA'
@@ -12,7 +14,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <CTA/>
+        <CTA />
       </main>
 
       <footer className={styles.footer}>

@@ -1,9 +1,13 @@
-import OrderedList from '/components/OrderedList'
-import { useFetch } from '/hooks/useFetch'
+'use client'
 
-const SubtopicList = ({supabase}) => {
-    const {data, loading, error} = useFetch('subtopics', supabase)
-    
+import OrderedList from '@/components/OrderedList'
+import { useFetch } from '@/hooks/useFetch'
+
+interface Props { params: {id: string} }
+
+const SubtopicList = () => {
+    const { data, loading, error } = useFetch('subtopics')
+
     if (loading) return <p>Loading...</p>
     if (error) return <p>Error fetching subtopics. Try again in a minute.</p>
 
