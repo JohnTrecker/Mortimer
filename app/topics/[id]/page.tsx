@@ -3,8 +3,6 @@
 import OrderedList from '@/components/OrderedList'
 import { useFetch } from '@/hooks/useFetch'
 
-interface Props { params: {id: string} }
-
 const SubtopicList = () => {
     const { data, loading, error } = useFetch('subtopics')
 
