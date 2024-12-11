@@ -1,15 +1,15 @@
 'use client'
 
-import Text from '@/components/Text'
+import Loading from '@/app/loading'
 import { useFetch } from '@/hooks/useFetch'
 
 const Excerpt = () => {
     const {data, loading, error} = useFetch('excerpt')
 
-    if (loading) return <p>Loading...</p>
+    if (loading) return <Loading />
     if (error) return <p>Error fetching excerpt. Try again in a minute.</p>
 
-    return <Text value={data} />
+    return <p className='m-8'>{data}</p>
 }
 
 export default Excerpt

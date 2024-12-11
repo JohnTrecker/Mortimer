@@ -1,21 +1,40 @@
 'use client'
 
-import OrderedList from '@/components/OrderedList'
+import Loading from '@/app/loading'
 import Citation from '@/components/Citation'
 import { useFetch } from '@/hooks/useFetch'
+
+interface Ref {
+    id: number;
+    excerpt_id: number;
+    work: {
+        title: string;
+        author: string;
+    };
+    summary: {
+        summary: string;
+    };
+    pages: string | null;
+}
 
 const ReferencesList = () => {
     const {data, loading, error} = useFetch('references')
 
-    if (loading) return <p>Loading...</p>
+    if (loading) return <Loading />
     if (error) return <p>Error fetching references. Try again in a minute.</p>
 
     return (
-        <>
-            <OrderedList data={data} path='/excerpt/'>
-                <Citation/>
-            </OrderedList>
-        </>
+        <ol>
+            {data.map((ref: Ref) => {
+                // id,pages,work(author,title,translator),summary(summary),excerpt_id
+                const { work, summary, pages, excerpt_id, id } = ref
+                return (
+                    <li key={id}>
+                        <Citation work={work} summary={summary} pages={pages} excerpt_id={excerpt_id} />
+                    </li>
+                )
+            })}
+        </ol>
     )
 }
 

@@ -1,8 +1,8 @@
 import { Spinner } from "@nextui-org/react";
 
-export default function App() {
+export default function Loading() {
     return (
-        <div className="flex gap-4 w-screen h-screen">
+        <div className="container mx-auto">
             <Spinner size="lg" />
         </div>
     );

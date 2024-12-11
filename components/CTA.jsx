@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import styles from '/styles/container.module.css'
+import { Button } from '@nextui-org/react'
 
 export default function CTA(){
     return (
@@ -11,7 +12,7 @@ export default function CTA(){
             <br/>
             <br/>
             <Link href="/topics" passHref={true}>
-                <button>Explore by Topic</button>
+                <Button color="warning" variant="flat">Explore by Topic</Button>
             </Link>
         </div>
     )

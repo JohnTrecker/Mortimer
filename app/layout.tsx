@@ -5,7 +5,6 @@ import { Providers } from "./providers";
 // import { Auth } from '@supabase/auth-ui-react'
 // import { ThemeSupa } from '@supabase/auth-ui-shared'
 
-import "./globals.css";
 import '@/styles/globals.css'
 
 export const metadata: Metadata = {
@@ -23,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en" /* className="dark" */ 
     >
-      <body className={`antialiased`}>
+      <body className={`antialiased dark text-foreground bg-background container mx-auto flex flex-col items-center justify-start min-h-screen m-4`}>
         <Providers>
             {children}
         </Providers>

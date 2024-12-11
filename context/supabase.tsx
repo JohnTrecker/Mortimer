@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { Session, SupabaseClient } from '@supabase/supabase-js';
 import { createClient } from '@supabase/supabase-js'
+import { Database } from '@/utils/database.types'
 
 interface SupabaseState {
     supabase: SupabaseClient | null,
@@ -9,7 +10,7 @@ interface SupabaseState {
 const init: SupabaseState = { supabase: null, session: null }
 const SupabaseContext = createContext(init)
 
-export const supabase = createClient(
+export const supabase = createClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 )
