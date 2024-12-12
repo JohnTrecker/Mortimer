@@ -1,11 +1,20 @@
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Checkbox, Input, Link } from "@nextui-org/react";
+import { SupabaseContext } from "@/context/supabase";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Checkbox, Input, Link } from "@nextui-org/react";
+import { useContext } from "react";
+import AuthModal from "./AuthModal";
 
-export default function AddReferenceModal() {
-    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+interface Props {
+    isOpen: boolean,
+    onOpenChange: () => void
+}
+export default function AddReferenceModal({isOpen, onOpenChange}: Props) {
+    const { session } = useContext(SupabaseContext)
+
+    if (!session) {
+        return <AuthModal isOpen={isOpen} onOpenChange={onOpenChange} />
+    }
 
     return (
-        <>
-            <Button onPress={onOpen} color="primary">Open Modal</Button>
             <Modal
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
@@ -59,6 +68,5 @@ export default function AddReferenceModal() {
                     )}
                 </ModalContent>
             </Modal>
-        </>
     );
 }

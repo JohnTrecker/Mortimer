@@ -3,6 +3,9 @@
 import Loading from '@/app/loading'
 import Citation from '@/components/Citation'
 import { useFetch } from '@/hooks/useFetch'
+import RefPlaceholder from './RefPlaceholder';
+import { Button, useDisclosure } from '@nextui-org/react';
+import AddReferenceModal from '@/components/Modal/AddReferenceModal';
 
 interface Ref {
     id: number;
@@ -19,14 +22,21 @@ interface Ref {
 
 const ReferencesList = () => {
     const {data, loading, error} = useFetch('references')
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     if (loading) return <Loading />
     if (error) return <p>Error fetching references. Try again in a minute.</p>
 
     return (
         <ol>
+            <li key={0}>
+                <blockquote>
+                    <RefPlaceholder/>
+                    <Button className='m-8' color='warning' onPress={onOpen}>Add Reference</Button>
+                    <AddReferenceModal isOpen={isOpen} onOpenChange={onOpenChange}/>
+                </blockquote>
+            </li>
             {data.map((ref: Ref) => {
-                // id,pages,work(author,title,translator),summary(summary),excerpt_id
                 const { work, summary, pages, excerpt_id, id } = ref
                 return (
                     <li key={id}>
