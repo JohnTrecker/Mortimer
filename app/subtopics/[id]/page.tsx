@@ -33,7 +33,7 @@ const ReferencesList = () => {
                 <blockquote>
                     <RefPlaceholder/>
                     <Button className='m-8' color='warning' onPress={onOpen}>Add Reference</Button>
-                    <AddReferenceModal isOpen={isOpen} onOpenChange={onOpenChange}/>
+                    <AddReferenceModal isOpen={isOpen} onOpenChange={onOpenChange} />
                 </blockquote>
             </li>
             {data.map((ref: Ref) => {
