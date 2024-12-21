@@ -1,3 +1,4 @@
+import { NEXT_HMR_REFRESH_HEADER } from 'next/dist/client/components/app-router-headers';
 import React, { createContext, useReducer } from 'react';
 
 interface Value {
@@ -12,9 +13,10 @@ interface State {
 }
 
 interface Dispatches {
-  updateTopic: (v: Value) => void,
-  updateSubtopic: (v: Value) => void,
-  updateReference: (v: Value) => void,
+  updateTopic: (value: Value) => void,
+  updateSubtopic: (value: Value) => void,
+  updateReference: (value: Value) => void,
+  updateSeveral: (values: State) => void,
 }
 
 const initialState: State = {
@@ -29,6 +31,7 @@ const initialMethods: Dispatches = {
   updateTopic: noop,
   updateSubtopic: noop,
   updateReference: noop,
+  updateSeveral: noop,
 };
 
 const SelectionStateContext = createContext<State>(initialState)
@@ -37,7 +40,8 @@ const SelectionDispatchContext = createContext<Dispatches>(initialMethods)
 enum UPDATE {
   topic = "UPDATE_TOPIC",
   subtopic = "UPDATE_SUBTOPIC",
-  reference = "UPDATE_REFERENCE"
+  reference = "UPDATE_REFERENCE",
+  several = "UPDATE_SEVERAL"
 }
 
 interface Action {
@@ -49,7 +53,8 @@ function selectionReducer(state: State, action: Action) {
   switch (action.type) {
     case 'UPDATE_TOPIC':
     case 'UPDATE_SUBTOPIC':
-    case 'UPDATE_REFERENCE': {
+    case 'UPDATE_REFERENCE':
+    case 'UPDATE_SEVERAL': {
       return { ...state, ...action.payload }
     }
     default: {
@@ -83,10 +88,21 @@ const SelectionProvider = ({ children }: { children: React.ReactNode }) => {
     });
   }
 
+  function updateSeveral(updatedState: State) {
+    const newTopic = updatedState.topic.id ? updatedState.topic : state.topic
+    const newSubtopic = updatedState.subtopic.id ? updatedState.subtopic : state.subtopic
+    const newReference = updatedState.reference.id ? updatedState.reference : state.reference
+    dispatch({
+      type: UPDATE.several,
+      payload: {topic: {...newTopic}, subtopic: {...newSubtopic}, reference: {...newReference}}
+    });
+  }
+
   const dispatchMethods = {
     updateTopic,
     updateSubtopic,
     updateReference,
+    updateSeveral,
   };
 
   return (
