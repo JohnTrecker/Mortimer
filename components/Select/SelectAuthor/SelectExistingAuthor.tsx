@@ -1,8 +1,6 @@
 import { SupabaseContext } from "@/context/supabase";
-import { useFetch } from "@/hooks/useFetch";
 import { Tables } from "@/utils/database.types";
 import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
-import { supabase } from "@supabase/auth-ui-shared";
 import { useContext, useEffect, useState } from "react";
 
 type Author = Omit<Tables<'author'>, 'img_url'> & {
