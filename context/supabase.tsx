@@ -9,9 +9,8 @@ interface SupabaseState {
 const init: SupabaseState = { supabase: null, session: null }
 const SupabaseContext = createContext(init)
 
-const supabase = createClient()
-
 function SupabaseProvider({ children }: { children: React.ReactNode }) {
+    const supabase = createClient()
     const [session, setSession] = useState<Session | null>(null)
 
     useEffect(() => {
