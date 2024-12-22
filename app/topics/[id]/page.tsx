@@ -1,7 +1,7 @@
 'use client'
 
 import { useContext } from 'react';
-import { Button, Link, Accordion, AccordionItem } from "@nextui-org/react";
+import { Link, Accordion, AccordionItem } from "@nextui-org/react";
 
 import Loading from '@/app/loading';
 import { SelectionDispatchContext } from '@/context/selection';
