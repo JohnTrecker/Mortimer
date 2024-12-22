@@ -35,7 +35,7 @@ export default function AuthModal({ isOpen, onOpenChange, redirectTo }: Props) {
                 {(onClose) => (
                     <>
                         <ModalHeader className="flex flex-col gap-1">Sign in to add new references</ModalHeader>
-                        <ModalBody autoFocus>
+                        <ModalBody>
                             <Auth
                                 supabaseClient={supabase}
                                 additionalData={{

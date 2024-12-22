@@ -11,9 +11,14 @@ export default function CTA(){
             <br/>
             <br/>
             <br/>
-            <Link href="/topics" passHref={true}>
-                <Button color="warning" variant="flat">Explore by Topic</Button>
-            </Link>
+                <Button
+                    as={Link}
+                    href="/topics"
+                    color="warning"
+                    variant="flat"
+                >
+                    Explore by Topic
+                </Button>
         </div>
     )
 }

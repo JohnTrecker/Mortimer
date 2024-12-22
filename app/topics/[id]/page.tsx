@@ -1,12 +1,12 @@
 'use client'
 
+import { useContext } from 'react';
+import { Button, Link, Accordion, AccordionItem } from "@nextui-org/react";
+
 import Loading from '@/app/loading';
 import { SelectionDispatchContext } from '@/context/selection';
 import { useFetch } from '@/hooks/useFetch'
 import { Tables } from '@/utils/database.types';
-import { Accordion, AccordionItem } from "@nextui-org/react";
-import Link from 'next/link';
-import { useContext } from 'react';
 
 interface Subtopic extends Tables<'subtopic'>{
     subtopics: Subtopic[];
@@ -46,7 +46,7 @@ const NestedSubtopics = ({subtopics}: {subtopics: Subtopic[]}) => {
                                         href={`/subtopics/${subtopic.id}`}
                                         key={subtopic.alt_id}
                                         className='underline text-blue-600 hover:text-blue-800 visited:text-purple-600'
-                                        onClick={() => updateSubtopic({ id: String(subtopic.id), name: title })}
+                                        onPress={() => updateSubtopic({ id: String(subtopic.id), name: title })}
                                     >
                                         {title}
                                     </Link>
