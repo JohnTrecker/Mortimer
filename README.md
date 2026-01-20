@@ -22,13 +22,13 @@ yarn run start
 
 ## Developing
 
-This repo is a proof of concept. Styling and semantics are kept as simple as possible.
-File structure follows the API closely with a Next.js `/pages` pattern for resources on the followings URIs:
+This repo is a a labor of love. Really the dataset was the labor; I go through a new iteration of this UI every Christmas. Styling and semantics are kept pretty simple.
+File structure mostly follows the Next.js `/page.tsx` pattern for resources on the followings URIs:
 
-* `/topics` - all topics
-* `/topics[n]` - subtopics of topic `n`
-* `/subtopics[n]` - references to subtopic `n`
-* `/excerpt[n]` - a specfic passage
+* `/` - all topics
+* `/topic/[n]` - subtopics of topic `n`
+* `/subtopics/[n]` - references to subtopic `n`
+* `/passages/[n]` - a specfic passage
 
 ### Built With
 
@@ -42,22 +42,21 @@ File structure follows the API closely with a Next.js `/pages` pattern for resou
 
 ### Setting up Dev
 
-Here's a brief intro about what a developer must do in order to start developing
-the project further:
+to get started
 
 ```shell
 git clone https://github.com/johntrecker/mortimer
 cd mortimer/
-yarn add (or npm install)
-yarn run dev
+pnpm install (or yarn add)
+pnpm run dev
 ```
 
-After downloading the dependencies this will fire up a local server running on localhost:3000
+After downloading the dependencies `pnpm run dev` will fire up a local server running on localhost:3000. You can see your changes there.
 
 ### Building
 
 ```shell
-yarn run build
+pnpm run build
 ```
 
 <!-- ## Tests
