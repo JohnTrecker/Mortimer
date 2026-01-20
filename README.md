@@ -9,21 +9,9 @@ This project is a web client for the Syntopicon, an open API of ideas. Inspired 
 ![Adler indexing the Syntopicon](https://forum.zettelkasten.de/uploads/editor/98/4xccgbpfi3wi.jpg)
 
 
-## Getting started
-
-A quick introduction of the minimal setup you need to get a hello world up &
-running.
-
-```shell
-yarn add (or npm install)
-yarn run build
-yarn run start
-```
-
 ## Developing
 
-This repo is a a labor of love. Really the dataset was the labor; I go through a new iteration of this UI every Christmas. Styling and semantics are kept pretty simple.
-File structure mostly follows the Next.js `/page.tsx` pattern for resources on the followings URIs:
+This repo is a a labor of love. Really the database was the labor; I go through a new iteration of this UI every Christmas because it's relaxing. Styling and semantics are kept pretty simple. File structure mostly follows the Next.js `/page.tsx` pattern for resources on the followings URIs:
 
 * `/` - all topics
 * `/topic/[n]` - subtopics of topic `n`
